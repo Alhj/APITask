@@ -1,9 +1,9 @@
 import { connect, connection, ConnectionOptions } from 'mongoose'
-const dotenv = require('dotenv')
+import { config } from 'dotenv'
+
+config()
 
 const connectToDb = () => {
-  dotenv.config()
-
   const connectPath: string = process.env.DBCONFIG
 
   const connectOptions: ConnectionOptions = {
