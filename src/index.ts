@@ -1,8 +1,13 @@
 import express from 'express'
+import { connectToDb } from './helpers/db/'
+
 const app = express()
 const port = 8080
 
-app.get('/', (req,res) => {
+
+connectToDb()
+
+app.get('/', (req, res) => {
   res.send('hello world')
 })
 
