@@ -1,13 +1,10 @@
 import { connect, connection, ConnectionOptions } from 'mongoose'
-import { config } from 'dotenv'
+const dotenv = require('dotenv')
 
 const connectToDb = () => {
-  config()
-  
-  const connectPath: any = process.env.DBCONFIG
+  dotenv.config()
 
-  // tslint:disable-next-line:no-console
-  console.log(connectPath)
+  const connectPath: string = process.env.DBCONFIG
 
   const connectOptions: ConnectionOptions = {
     useNewUrlParser: true,
