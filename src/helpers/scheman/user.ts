@@ -1,4 +1,4 @@
-import { Document, Model, model, Types, Schema, Query } from 'mongoose'
+import { model, Schema} from 'mongoose'
 import { genSalt, hash, compare } from 'bcrypt'
 import { IUser } from '../../models/interface/user'
 
