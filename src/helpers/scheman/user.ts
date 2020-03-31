@@ -8,8 +8,11 @@ const userSchema: Schema = new Schema({
   password: { type: String, required: true }
 });
 
-userSchema.pre<IUser>('save', async next => {
+userSchema.pre<IUser>('save', async function(next:Function){
   const salt = await genSalt(10)
+  
+  // tslint:disable-next-line:no-console
+  
   const hashPassword = await hash(this.password, salt)
   this.password = hashPassword;
   next()

@@ -1,4 +1,4 @@
-import { User } from './user'
+import { IUserDb } from './user'
 
 export interface IRoutes {
   statusCode:number
@@ -6,5 +6,5 @@ export interface IRoutes {
 }
 
 export interface IRotueDbUser extends IRoutes {
-  user:User
+  user:IUserDb
 }

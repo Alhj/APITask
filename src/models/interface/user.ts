@@ -6,7 +6,7 @@ export interface IUser extends Document {
   password: string
 }
 
-export interface User {
+export interface IUserDb {
   name: string
   email: string
   password: string

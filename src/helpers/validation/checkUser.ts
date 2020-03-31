@@ -1,6 +1,6 @@
 import { IUser } from '../../models/interface/user'
 
-export const validateUser: (user: IUser) => Boolean = (user: IUser) => {
+ const validateUser: (user: IUser) => Boolean = (user: IUser) => {
   
   const checkEpost:Boolean = validateEpost(user.email)
   
@@ -11,14 +11,16 @@ export const validateUser: (user: IUser) => Boolean = (user: IUser) => {
   return checkEpost && checkUsername && checkPassword ? true: false
 }
 
-const validateEpost: (epost:string) => Boolean = (epost:string) => {
-  return epost.includes('@')
+const validateEpost: (email:String) => Boolean = (email:String) => {
+  return email.includes('@')
 }
 
-const validateUsername:(username:string) => Boolean = (username:string) => {
+const validateUsername:(username:String) => Boolean = (username:String) => {
   return username.length >= 3
 }
 
-const validatePassword: (password: string) => Boolean = (password: string) => {
+const validatePassword: (password: String) => Boolean = (password: String) => {
   return password.length >= 6;
 }
+
+export default validateUser
