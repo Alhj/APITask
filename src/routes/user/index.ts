@@ -1,5 +1,6 @@
 import { Router } from 'express'
-import { IRotueDbUser } from '../../models/interface/routes'
+import User from '../../helpers/scheman/user'
+import { IRoutes, IRotueDbUser } from '../../models/interface/routes'
 
 const router = Router()
 
@@ -16,5 +17,16 @@ router.route('/')
     }
     res.status(200).send(obj)
   })
+  .post((req, res) => {
+    // tslint:disable-next-line:no-console
+    console.log(req.body)
 
-export default router
+    const obj: IRoutes = {
+      statusCode: 201,
+      message: 'user created'
+    }
+
+    res.status(201).send(obj);
+  })
+
+module.exports = router
