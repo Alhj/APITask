@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { Document } from 'mongoose'
 import taskCollection from '../../helpers/scheman/collection'
 import { IRoutes } from '../../models/interface/routes'
+import { ICollection } from '../../models/interface/collection'
 
 const side = Router()
 
@@ -40,7 +41,7 @@ side.route('/:id')
     }
   })
   .post(async (req: Request, res: Response) => {
-
+    const createProjet
   })
 
 module.exports = side
