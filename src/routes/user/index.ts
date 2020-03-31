@@ -1,14 +1,15 @@
 import { Router } from 'express'
+import { Request, Response } from 'express'
 import { Document } from 'mongoose'
 import User from '../../helpers/scheman/user'
 import validateUser from '../../helpers/validation/checkUser'
 import { IRoutes, IRotueDbUser } from '../../models/interface/routes'
 import { IUser } from '../../models/interface/user'
 
-const router = Router()
+const side = Router()
 
-router.route('/')
-  .get((req, res) => {
+side.route('/')
+  .get((req: Request, res: Response) => {
     const obj: IRotueDbUser = {
       statusCode: 200,
       message: 'add user do database',
@@ -20,25 +21,35 @@ router.route('/')
     }
     res.status(200).send(obj)
   })
-  .post(async (req, res) => {
+  .post(async (req: Request, res: Response) => {
 
     const user: IUser = req.body
 
     if (validateUser(user)) {
-      const obj: IRoutes = {
-        statusCode: 201,
-        message: 'user created'
+      try {
+        const obj: IRoutes = {
+          statusCode: 201,
+          message: 'user created'
+        }
+
+        const newUser: Document = new User({
+          name: user.name,
+          email: user.email,
+          password: user.password,
+        })
+
+        await newUser.save()
+
+        res.status(201).send(obj)
+      } catch (e) {
+        const obj: IRoutes = {
+          statusCode: 400,
+          message: 'email addres are already register'
+        }
+        res.status(400).send(obj)
       }
 
-      const newUser: Document = new User({
-        name: user.name,
-        email: user.email,
-        password: user.password,
-      })
-      
-      await newUser.save()
 
-      res.status(201).send(obj);
     } else {
 
       const obj: IRoutes = {
@@ -51,4 +62,4 @@ router.route('/')
     }
   })
 
-module.exports = router
+module.exports = side

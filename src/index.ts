@@ -16,6 +16,8 @@ app.use(json())
 
 app.use('/user', cors(corsOption), require('./routes/user'))
 
+app.use('/collection', cors(corsOption), require('./routes/collection'))
+
 app.listen(port, () => {
   // tslint:disable-next-line:no-console
   console.log(`server is running on http://localhost:${port}`)

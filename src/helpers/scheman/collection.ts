@@ -6,9 +6,9 @@ const collectionScheman: Schema = new Schema({
     type: String,
     required: true,
   },
-  collection: {
+  taskCollection: {
     type: []
   }
 })
 
-export default model('collection', collectionScheman)
+export default model('taskCollection', collectionScheman)
