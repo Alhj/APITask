@@ -7,7 +7,7 @@ const collectionScheman: Schema = new Schema({
     required: true,
   },
   taskCollection: {
-    type: []
+    type: Array
   }
 })
 

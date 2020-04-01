@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import { Request, Response } from 'express'
 import { Document } from 'mongoose'
-import taskCollection from '../../helpers/scheman/collection'
-import { IRoutes } from '../../models/interface/routes'
-import { ICollection } from '../../models/interface/collection'
+import TaskCollection from '../../helpers/scheman/collection'
+import { IRoutes, IRouteCollection } from '../../models/interface/routes'
+import { ICollection, ICollectionDoc } from '../../models/interface/collection'
 
-const side = Router()
+const side:Router = Router()
 
 
 side.route('/')
@@ -23,11 +23,11 @@ side.route('/:id')
     const id: string = req.params.id
 
     try {
-      const idCollection: Document = await taskCollection.findById(id);
-
+      const taskCollection: Document = await TaskCollection.findById(id);
+      
       const obj: IRoutes = {
         statusCode: 200,
-        message: id
+        message: id,
       }
 
       res.status(200).send(obj)
@@ -41,7 +41,21 @@ side.route('/:id')
     }
   })
   .post(async (req: Request, res: Response) => {
-    const createProjet
+    const createProjet: ICollection = req.body
+
+    const obj: IRoutes = {
+      statusCode: 201,
+      message: 'collection has been added'
+    }
+
+    const newCollection = new TaskCollection({
+      project: createProjet.project,
+      taskCollection: []
+    })
+
+    await newCollection.save()
+
+    res.status(201).send(obj)
   })
 
 module.exports = side

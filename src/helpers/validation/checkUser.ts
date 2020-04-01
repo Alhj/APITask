@@ -1,25 +1,25 @@
 import { IUser } from '../../models/interface/user'
 
- const validateUser: (user: IUser) => Boolean = (user: IUser) => {
-  
-  const checkEpost:Boolean = validateEpost(user.email)
-  
-  const checkUsername:Boolean = validateUsername(user.name)
-  
-  const checkPassword:Boolean = validatePassword(user.password)
+const validateUser: (user: IUser) => Boolean = (user: IUser) => {
 
-  return checkEpost && checkUsername && checkPassword ? true: false
+  const checkEmail: Boolean = validateEmail(user.email)
+
+  const checkUsername: Boolean = validateUsername(user.name)
+
+  const checkPassword: Boolean = validatePassword(user.password)
+
+  return checkEmail && checkUsername && checkPassword ? true : false
 }
 
-const validateEpost: (email:String) => Boolean = (email:String) => {
+export const validateEmail: (email: String) => Boolean = (email: String) => {
   return email.includes('@')
 }
 
-const validateUsername:(username:String) => Boolean = (username:String) => {
+const validateUsername: (username: String) => Boolean = (username: String) => {
   return username.length >= 3
 }
 
-const validatePassword: (password: String) => Boolean = (password: String) => {
+export const validatePassword: (password: String) => Boolean = (password: String) => {
   return password.length >= 6;
 }
 
