@@ -28,12 +28,17 @@ side.route('/')
     }
 
     try {
-      const user:any = await User.findOne({ email: authCredentials.email })
+      const user: any = await User.findOne({ email: authCredentials.email })
 
       const passwordCheck = user.comparPassword(authCredentials.password)
-      
+
+      // tslint:disable-next-line:no-console
+      console.log(passwordCheck);
 
     } catch (e) {
       res.status(400).send('hello')
     }
   })
+
+
+module.exports = side;
