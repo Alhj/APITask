@@ -3,6 +3,7 @@ import { config } from 'dotenv'
 
 config()
 
+
 const connectToDb = () => {
   const connectPath: string = process.env.DBCONFIG
 
