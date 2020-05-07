@@ -15,7 +15,7 @@ const corsOption: CorsOptions = {
 
 app.use(json())
 
-app.use('/user', cors(corsOption), require('./routes/user'))
+app.use('/user', cors(corsOption), require('./routes/signUp'))
 
 app.use('/collection', cors(corsOption), require('./routes/collection'))
 
