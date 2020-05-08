@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { generateKey, checkKey } from '../src/helpers/generate/ApiKey'
-import { createToken } from './helpers/genereateAPIKey'
+import { createToken, createTokenSecreate } from './helpers/genereateAPIKey'
 
 describe('token', function () {
   it('token valid', function () {
@@ -15,5 +15,14 @@ describe('token', function () {
     const result: boolean = checkKey(createToken(data))
 
     expect(result).equals(false)
+  })
+
+  it('token invalida diffrent sec', function() {
+    const secret: string = '123helloWorld'
+
+    const result: boolean = checkKey(createTokenSecreate(secret))
+
+    expect(result).equals(false)
+
   })
 })

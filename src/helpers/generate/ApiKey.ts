@@ -15,13 +15,18 @@ export const generateKey: () => string = () => {
 }
 
 export const checkKey: (token: string) => boolean = (token: string) => {
-  const tokenDecrypt: any = verify(token, process.env.SECREAT)
+  try {
+    const tokenDecrypt: any = verify(token, process.env.SECREAT)
 
-  const matchData = tokenDecrypt.data === process.env.DATA
+    const matchData = tokenDecrypt.data === process.env.DATA
 
-  if (matchData) {
-    return true
-  } else {
+    if (matchData) {
+      return true
+    } else {
+      return false
+    }
+
+  } catch (e) {
     return false
   }
 
