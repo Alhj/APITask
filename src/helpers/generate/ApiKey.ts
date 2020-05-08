@@ -1,5 +1,7 @@
-import { sign } from 'jsonwebtoken'
+import { sign, verify } from 'jsonwebtoken'
 import { config } from 'dotenv'
+
+import { IToken } from '../../models/interface/auth'
 
 config()
 
@@ -12,6 +14,10 @@ export const generateKey: () => string = () => {
   return token
 }
 
-export const checkKey = () => {
+export const checkKey: (token: string) => boolean = (token: string) => {
+  const tokenDecrypt = verify(token, process.env.SECREAT)
 
+  console.log(tokenDecrypt)
+
+  return false
 }

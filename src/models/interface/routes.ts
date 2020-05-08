@@ -7,7 +7,7 @@ export interface IRoutes {
 }
 
 export interface IRouteCollection extends IRoutes { 
-  taskCollection:ICollectionDoc
+  taskCollection:any
 }
 
 export interface IRotueDbUser extends IRoutes {

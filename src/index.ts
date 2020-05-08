@@ -21,6 +21,8 @@ app.use('/collection', cors(corsOption), require('./routes/collection'))
 
 app.use('/signIn', cors(corsOption), require('./routes/signIn'))
 
+app.use('/test', require('./routes/test'))
+
 app.listen(port, () => {
   // tslint:disable-next-line:no-console
   console.log(`server is running on http://localhost:${port}`)
