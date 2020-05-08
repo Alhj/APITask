@@ -6,8 +6,8 @@ import { IToken } from '../../models/interface/auth'
 config()
 
 export const generateKey: () => string = () => {
-  const data = process.env.DATA
-  const secret = process.env.SECREAT
+  const data: string = process.env.DATA
+  const secret: string = process.env.SECREAT
 
   const token = sign({ data: data }, secret)
 
@@ -15,9 +15,14 @@ export const generateKey: () => string = () => {
 }
 
 export const checkKey: (token: string) => boolean = (token: string) => {
-  const tokenDecrypt = verify(token, process.env.SECREAT)
+  const tokenDecrypt: any = verify(token, process.env.SECREAT)
 
-  console.log(tokenDecrypt)
+  const matchData = tokenDecrypt.data === process.env.DATA
 
-  return false
+  if (matchData) {
+    return true
+  } else {
+    return false
+  }
+
 }
