@@ -12,10 +12,10 @@ const validateUser: (user: IUser) => Boolean = (user: IUser) => {
 }
 
 export const validateEmail: (email: String) => Boolean = (email: String) => {
-  return email.includes('@')
+  return email.includes('@') && email.length >= 8
 }
 
-const validateUsername: (username: String) => Boolean = (username: String) => {
+export const validateUsername: (username: String) => Boolean = (username: String) => {
   return username.length >= 3
 }
 
