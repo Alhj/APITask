@@ -2,15 +2,12 @@ import { model, Schema } from 'mongoose'
 import { ITask } from '../../models/interface/task'
 
 const collectionScheman: Schema = new Schema({
-  projectName: {
-    type: String,
-    required: true,
-  },
+  project: String,
   taskCollection: {
-    type: Array
+    type: [String]
   },
   users: {
-    type: Array
+    type: [String]
   }
 })
 

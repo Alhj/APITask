@@ -21,22 +21,22 @@ side.route('/')
 
     if (checkKey(token)) {
 
-      let collections:ICollection[] = [] 
+      let collections: ICollection[] = []
 
       const userName: string = req.body.name;
 
       const findCollection: any = await Collection.find();
 
       findCollection.forEach((collection: ICollection) => {
-        let userFound:boolean
-        
-        collection.users.forEach((user:string) => {
-          if(user === userName) {
+        let userFound: boolean
+
+        collection.users.forEach((user: string) => {
+          if (user === userName) {
             userFound = true
           }
         })
 
-        if(userFound) {
+        if (userFound) {
           collections.push(collection)
         }
       });
@@ -64,19 +64,22 @@ side.route('/')
 
     if (checkKey(token)) {
 
-      const createProjet: ICollection = req.body
+      const name: string = req.body.name
 
+      const projectName:String = req.body.projectName
+
+      const newCollection: Document = new TaskCollection({
+        project: projectName,
+        taskCollection: [],
+        users: [name]
+      })
+
+      await newCollection.save()
+      
       const obj: IRoutes = {
         statusCode: 201,
         message: 'collection has been added'
       }
-
-      const newCollection = new TaskCollection({
-        project: createProjet.project,
-        taskCollection: []
-      })
-
-      await newCollection.save()
 
       res.status(201).send(obj)
     } else {
@@ -87,7 +90,6 @@ side.route('/')
 
       res.status(403).send(obj);
     }
-
   })
 
 side.route('/:id')
