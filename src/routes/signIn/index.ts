@@ -8,7 +8,7 @@ import { generateKey } from '../../helpers/generate/ApiKey'
 
 import validateAuth from '../../helpers/validation/validateAuth'
 import { IAuthSigin } from '../../models/interface/auth'
-import { IRoutes } from '../../models/interface/routes'
+import { IRoutes, IRotueAuth } from '../../models/interface/routes'
 
 config()
 
@@ -37,14 +37,15 @@ side.route('/')
       const passwordCheck: boolean = await comparePassword(authCredentials.password, user.password)
 
       if (passwordCheck) {
-        
+
         const token = generateKey()
 
         res.header('authorization', 'Bearer ' + token)
 
-        const obj:IRoutes = {
-          statusCode:202,
-          message: 'token can be found in header'
+        const obj: IRotueAuth = {
+          statusCode: 202,
+          message: 'token can be found in header',
+          authState: true
         }
 
         res.status(202).send(obj)
@@ -53,9 +54,10 @@ side.route('/')
         throw new Error();
       }
     } catch (e) {
-      const obj: IRoutes = {
+      const obj: IRotueAuth = {
         statusCode: 400,
-        message: "email or password don't match"
+        message: "email or password don't match",
+        authState: false
       }
       res.status(400).send(obj)
     }

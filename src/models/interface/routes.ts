@@ -6,8 +6,12 @@ export interface IRoutes {
   message: string
 }
 
-export interface IRouteCollection extends IRoutes { 
-  taskCollection:any
+export interface IRouteCollection extends IRoutes {
+  taskCollection: any
+}
+
+export interface IRotueAuth extends IRoutes {
+  authState: boolean
 }
 
 export interface IRotueDbUser extends IRoutes {
