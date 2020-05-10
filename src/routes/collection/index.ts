@@ -2,23 +2,49 @@ import { Router } from 'express'
 import { Request, Response } from 'express'
 import { Document } from 'mongoose'
 
+
+import Collection from '../../helpers/scheman/collection'
 import { checkKey } from '../../helpers/generate/ApiKey'
 import TaskCollection from '../../helpers/scheman/collection'
+
 import { IRoutes, IRouteCollection } from '../../models/interface/routes'
 import { ICollection, ICollectionDoc } from '../../models/interface/collection'
+
 
 const side: Router = Router()
 
 
 side.route('/')
-  .get((req: Request, res: Response) => {
+  .get(async (req: Request, res: Response) => {
 
     const token: string = req.header('authorization').substring(7)
 
     if (checkKey(token)) {
-      const obj: IRoutes = {
+
+      let collections:ICollection[] = [] 
+
+      const userName: string = req.body.name;
+
+      const findCollection: any = await Collection.find();
+
+      findCollection.forEach((collection: ICollection) => {
+        let userFound:boolean
+        
+        collection.users.forEach((user:string) => {
+          if(user === userName) {
+            userFound = true
+          }
+        })
+
+        if(userFound) {
+          collections.push(collection)
+        }
+      });
+
+      const obj: IRouteCollection = {
         statusCode: 200,
-        message: ''
+        message: '',
+        taskCollection: collections
       }
 
       res.status(200).send(obj)
@@ -71,6 +97,7 @@ side.route('/:id')
     if (checkKey(token)) {
 
       const id: string = req.params.id
+
       try {
         const taskCollection: Document = await TaskCollection.findById(id);
 

@@ -8,4 +8,5 @@ export interface ICollectionDoc extends Document {
 export interface ICollection {
   project:string
   taskCollection: []
+  users: string[]
 }
