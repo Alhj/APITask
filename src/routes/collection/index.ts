@@ -13,7 +13,6 @@ import { ICollection, ICollectionDoc } from '../../models/interface/collection'
 
 const side: Router = Router()
 
-
 side.route('/')
   .get(async (req: Request, res: Response) => {
 
@@ -64,14 +63,14 @@ side.route('/')
 
     if (checkKey(token)) {
 
-      const name: string = req.body.name
+      const userName: string = req.body.name
 
       const projectName:String = req.body.projectName
 
       const newCollection: Document = new TaskCollection({
         project: projectName,
         taskCollection: [],
-        users: [name]
+        users: [userName]
       })
 
       await newCollection.save()

@@ -1,8 +1,12 @@
 import express from 'express'
 import { Express } from 'express'
-import { connectToDb } from './helpers/db/'
+import { Request, Response } from 'express'
 import cors, { CorsOptions } from 'cors'
 import { json } from 'body-parser'
+
+import { connectToDb } from './helpers/db/'
+import { obj404 } from './models/staticRespons/statusCodeObj'
+
 const app: Express = express()
 const port = 8080
 
@@ -21,7 +25,7 @@ app.use('/collection', cors(corsOption), require('./routes/collection'))
 
 app.use('/signIn', cors(corsOption), require('./routes/signIn'))
 
-app.use('/test', require('./routes/test'))
+app.use((req: Request, res: Response) => { res.status(404).send(obj404) })
 
 app.listen(port, () => {
   // tslint:disable-next-line:no-console
