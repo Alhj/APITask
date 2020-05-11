@@ -45,6 +45,7 @@ side.route('/')
         const obj: IRotueAuth = {
           statusCode: 202,
           message: 'token can be found in header',
+          user: user.name ,
           authState: true
         }
 
@@ -57,6 +58,7 @@ side.route('/')
       const obj: IRotueAuth = {
         statusCode: 400,
         message: "email or password don't match",
+        user: 'none',
         authState: false
       }
       res.status(400).send(obj)

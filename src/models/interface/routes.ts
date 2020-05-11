@@ -11,6 +11,7 @@ export interface IRouteCollection extends IRoutes {
 }
 
 export interface IRotueAuth extends IRoutes {
+  user: string
   authState: boolean
 }
 

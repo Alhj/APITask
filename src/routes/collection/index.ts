@@ -8,8 +8,8 @@ import { checkKey } from '../../helpers/generate/ApiKey'
 import TaskCollection from '../../helpers/scheman/collection'
 
 import { IRoutes, IRouteCollection } from '../../models/interface/routes'
-import { ICollection, ICollectionDoc } from '../../models/interface/collection'
-
+import { ICollection } from '../../models/interface/collection'
+import { IUpdate } from '../../models/interface/respons'
 
 const side: Router = Router()
 
@@ -30,7 +30,7 @@ side.route('/')
         let userFound: boolean
 
         collection.users.forEach((user: string) => {
-          if (user === userName) {
+          if (user.toLowerCase() === userName.toLowerCase()) {
             userFound = true
           }
         })
@@ -65,7 +65,7 @@ side.route('/')
 
       const userName: string = req.body.name
 
-      const projectName:String = req.body.projectName
+      const projectName: String = req.body.projectName
 
       const newCollection: Document = new TaskCollection({
         project: projectName,
@@ -74,7 +74,7 @@ side.route('/')
       })
 
       await newCollection.save()
-      
+
       const obj: IRoutes = {
         statusCode: 201,
         message: 'collection has been added'
@@ -117,6 +117,22 @@ side.route('/:id')
 
         res.status(400).send(obj)
       }
+
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj);
+    }
+  })
+  .put(async (req: Request, res: Response) => {
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+
+      const body: IUpdate = req.body
 
     } else {
       const obj: IRoutes = {
