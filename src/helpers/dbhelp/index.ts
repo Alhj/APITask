@@ -14,5 +14,4 @@ export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body
   } catch (e) {
     return false
   }
-
 }
