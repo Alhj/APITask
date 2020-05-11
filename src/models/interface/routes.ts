@@ -18,3 +18,7 @@ export interface IRotueAuth extends IRoutes {
 export interface IRotueDbUser extends IRoutes {
   user: IUserDb
 }
+
+export interface IRotueUpdate extends IRoutes {
+  updated: boolean
+}

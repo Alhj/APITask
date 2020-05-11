@@ -5,9 +5,11 @@ import { Document } from 'mongoose'
 
 import Collection from '../../helpers/scheman/collection'
 import { checkKey } from '../../helpers/generate/ApiKey'
+import { updateCollection } from '../../helpers/dbhelp'
 import TaskCollection from '../../helpers/scheman/collection'
 
 import { IRoutes, IRouteCollection } from '../../models/interface/routes'
+import { IRotueUpdate } from '../../models/interface/routes'
 import { ICollection } from '../../models/interface/collection'
 import { IUpdate } from '../../models/interface/respons'
 
@@ -134,6 +136,26 @@ side.route('/:id')
 
       const body: IUpdate = req.body
 
+      const update: boolean = await updateCollection(body)
+
+      if (update) {
+        const obj: IRotueUpdate = {
+          statusCode: 201,
+          message: 'collection have been updated',
+          updated: true
+        }
+
+        res.status(201).send(obj)
+
+      } else {
+        const obj: IRotueUpdate = {
+          statusCode: 204,
+          message: 'somthing when wrong with the update',
+          updated: false
+        }
+
+        res.status(204).send(obj)
+      }
     } else {
       const obj: IRoutes = {
         statusCode: 403,
