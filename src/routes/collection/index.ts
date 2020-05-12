@@ -10,7 +10,7 @@ import TaskCollection from '../../helpers/scheman/collection'
 
 import { IRoutes, IRouteCollection } from '../../models/interface/routes'
 import { IRotueUpdate } from '../../models/interface/routes'
-import { ICollection } from '../../models/interface/collection'
+import { ICollection, ICollectionDoc } from '../../models/interface/collection'
 import { IUpdate } from '../../models/interface/respons'
 
 const side: Router = Router()
@@ -22,13 +22,13 @@ side.route('/')
 
     if (checkKey(token)) {
 
-      let collections: ICollection[] = []
+      let collections: ICollectionDoc[] = []
 
       const userName: string = req.body.name;
 
-      const findCollection: any = await Collection.find();
+      const findCollection: ICollectionDoc[] = await Collection.find();
 
-      findCollection.forEach((collection: ICollection) => {
+      findCollection.forEach((collection: ICollectionDoc) => {
         let userFound: boolean
 
         collection.users.forEach((user: string) => {
@@ -36,7 +36,7 @@ side.route('/')
             userFound = true
           }
         })
-
+        
         if (userFound) {
           collections.push(collection)
         }
@@ -102,7 +102,7 @@ side.route('/:id')
       const id: string = req.params.id
 
       try {
-        const taskCollection: Document = await TaskCollection.findById(id);
+        const taskCollection: ICollectionDoc = await TaskCollection.findById(id);
 
         const obj: IRouteCollection = {
           statusCode: 200,

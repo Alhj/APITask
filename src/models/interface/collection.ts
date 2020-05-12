@@ -1,8 +1,9 @@
 import { Document } from 'mongoose'
 
 export interface ICollectionDoc extends Document {
-  project:string
-  taskCollection: []
+  project?:string
+  taskCollection?: []
+  users?: string[]
 }
 
 export interface ICollection {

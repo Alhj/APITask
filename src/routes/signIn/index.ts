@@ -5,9 +5,10 @@ import { config } from 'dotenv'
 import User from '../../helpers/scheman/user'
 import { comparePassword } from '../../helpers/validation/comparePass'
 import { generateKey } from '../../helpers/generate/ApiKey'
-
 import validateAuth from '../../helpers/validation/validateAuth'
+
 import { IAuthSigin } from '../../models/interface/auth'
+import { IUser } from '../../models/interface/user'
 import { IRoutes, IRotueAuth } from '../../models/interface/routes'
 
 config()
@@ -32,7 +33,7 @@ side.route('/')
     }
 
     try {
-      const user: any = await User.findOne({ email: authCredentials.email })
+      const user: IUser = await User.findOne({ email: authCredentials.email })
 
       const passwordCheck: boolean = await comparePassword(authCredentials.password, user.password)
 

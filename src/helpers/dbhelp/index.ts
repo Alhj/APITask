@@ -1,12 +1,13 @@
 import { IUpdate } from '../../models/interface/respons'
+import { ICollectionDoc } from '../../models/interface/collection'
 import Collection from '../scheman/collection'
 
 export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body: IUpdate) => {
   try {
 
-    const coll: any = await Collection.findById(body.id)
+    const coll: ICollectionDoc = await Collection.findById(body.id)
 
-    coll.collection = body.collection
+    coll.taskCollection = body.collection.taskCollection
 
     coll.save();
 
