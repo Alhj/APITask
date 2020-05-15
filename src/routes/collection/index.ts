@@ -7,58 +7,18 @@ import Collection from '../../helpers/scheman/collection'
 import { checkKey } from '../../helpers/generate/ApiKey'
 import { updateCollection } from '../../helpers/dbhelp'
 import TaskCollection from '../../helpers/scheman/collection'
+import UserCollection from '../../helpers/scheman/user'
 
 import { IRoutes, IRouteCollection } from '../../models/interface/routes'
 import { IRotueUpdate } from '../../models/interface/routes'
-import { ICollection, ICollectionDoc } from '../../models/interface/collection'
+import { ICollectionDoc } from '../../models/interface/collection'
 import { IUpdate } from '../../models/interface/respons'
+
 
 const side: Router = Router()
 
+
 side.route('/')
-  .get(async (req: Request, res: Response) => {
-
-    const token: string = req.header('authorization').substring(7)
-
-    if (checkKey(token)) {
-
-      let collections: ICollectionDoc[] = []
-
-      const userName: string = req.body.name;
-
-      const findCollection: ICollectionDoc[] = await Collection.find();
-
-      findCollection.forEach((collection: ICollectionDoc) => {
-        let userFound: boolean
-
-        collection.users.forEach((user: string) => {
-          if (user.toLowerCase() === userName.toLowerCase()) {
-            userFound = true
-          }
-        })
-        
-        if (userFound) {
-          collections.push(collection)
-        }
-      });
-
-      const obj: IRouteCollection = {
-        statusCode: 200,
-        message: '',
-        taskCollection: collections
-      }
-
-      res.status(200).send(obj)
-
-    } else {
-      const obj: IRoutes = {
-        statusCode: 403,
-        message: 'not a valid token in the header on no token in the header'
-      }
-
-      res.status(403).send(obj);
-    }
-  })
   .post(async (req: Request, res: Response) => {
 
     const token: string = req.header('authorization').substring(7)
@@ -66,6 +26,17 @@ side.route('/')
     if (checkKey(token)) {
 
       const userName: string = req.body.name
+
+      const findUser = await UserCollection.findOne({ name: userName })
+
+      if (!findUser) {
+        const obj: IRoutes = {
+          statusCode: 403,
+          message: 'no user found'
+        }
+        res.status(403).send(obj)
+        return;
+      }
 
       const projectName: String = req.body.projectName
 
@@ -83,6 +54,51 @@ side.route('/')
       }
 
       res.status(201).send(obj)
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj);
+    }
+  })
+
+side.route('/:name')
+  .get(async (req: Request, res: Response) => {
+
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+
+      let collections: ICollectionDoc[] = []
+
+      const userName: string = req.params.name;
+
+      const findCollection: ICollectionDoc[] = await Collection.find();
+
+      findCollection.forEach((collection: ICollectionDoc) => {
+        let userFound: boolean
+
+        collection.users.forEach((user: string) => {
+          if (user.toLowerCase() === userName.toLowerCase()) {
+            userFound = true
+          }
+        })
+
+        if (userFound) {
+          collections.push(collection)
+        }
+      });
+
+      const obj: IRouteCollection = {
+        statusCode: 200,
+        message: '',
+        taskCollection: collections
+      }
+
+      res.status(200).send(obj)
+
     } else {
       const obj: IRoutes = {
         statusCode: 403,

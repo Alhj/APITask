@@ -13,7 +13,8 @@ const port = 8080
 connectToDb()
 
 const corsOption: CorsOptions = {
-  origin: 'http://localhost:4200/',
+  origin: 'http://localhost:4200',
+  exposedHeaders:['authorization'],
   optionsSuccessStatus: 200
 }
 
