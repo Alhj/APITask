@@ -113,9 +113,6 @@ side.route('/tasks/:id')
   .get(async (req: Request, res: Response) => {
     const token: string = req.header('authorization').substring(7)
 
-    // tslint:disable-next-line:no-console
-    console.log('hello')
-
     if (checkKey(token)) {
 
       const id: string = req.params.id

@@ -14,17 +14,19 @@ connectToDb()
 
 const corsOption: CorsOptions = {
   origin: 'http://localhost:4200',
-  exposedHeaders:['authorization'],
+  exposedHeaders: ['authorization'],
   optionsSuccessStatus: 200
 }
 
+app.use(cors())
+
 app.use(json())
 
-app.use('/user', cors(corsOption), require('./routes/signUp'))
+app.use('/user', require('./routes/signUp'))
 
-app.use('/collection', cors(corsOption), require('./routes/collection'))
+app.use('/collection', require('./routes/collection'))
 
-app.use('/signIn', cors(corsOption), require('./routes/signIn'))
+app.use('/signIn', require('./routes/signIn'))
 
 app.use((req: Request, res: Response) => { res.status(404).send(obj404) })
 
