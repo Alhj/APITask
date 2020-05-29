@@ -5,9 +5,18 @@ import Collection from '../scheman/collection'
 export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body: IUpdate) => {
   try {
 
-    const coll: ICollectionDoc = await Collection.findById(body.id)
+    let coll: ICollectionDoc = await Collection.findById(body._id)
 
-    coll.taskCollection = body.collection.taskCollection
+    // tslint:disable-next-line:no-console
+    console.log(body.taskCollection)
+  
+    coll.taskCollection = body.taskCollection
+    
+    // tslint:disable-next-line:no-console
+    console.log()
+
+    // tslint:disable-next-line:no-console
+    console.log(coll)
 
     coll.save();
 

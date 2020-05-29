@@ -120,9 +120,6 @@ side.route('/tasks/:id')
       try {
         const taskCollection: ICollectionDoc = await TaskCollection.findById(id);
 
-        // tslint:disable-next-line:no-console
-        console.log(taskCollection)
-
         const obj: IRouteCollection = {
           statusCode: 200,
           message: `found a collection with id ${id}`,
@@ -154,6 +151,9 @@ side.route('/tasks/:id')
     if (checkKey(token)) {
 
       const body: IUpdate = req.body
+
+      // tslint:disable-next-line:no-console
+      console.log(body)
 
       const update: boolean = await updateCollection(body)
 
