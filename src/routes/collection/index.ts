@@ -185,4 +185,20 @@ side.route('/tasks/:id')
     }
   })
 
+side.route('/tasks/move/:id')
+  .put(async (req: Request, res: Response) => {
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+        const update:boolean = await updateCollection(req.body)
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj);
+    }
+  })
+
 module.exports = side

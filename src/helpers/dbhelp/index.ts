@@ -7,16 +7,7 @@ export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body
 
     let coll: ICollectionDoc = await Collection.findById(body._id)
 
-    // tslint:disable-next-line:no-console
-    console.log(body.taskCollection)
-  
     coll.taskCollection = body.taskCollection
-    
-    // tslint:disable-next-line:no-console
-    console.log()
-
-    // tslint:disable-next-line:no-console
-    console.log(coll)
 
     coll.save();
 
