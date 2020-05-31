@@ -190,7 +190,26 @@ side.route('/tasks/move/:id')
     const token: string = req.header('authorization').substring(7)
 
     if (checkKey(token)) {
-        const update:boolean = await updateCollection(req.body)
+      const update: boolean = await updateCollection(req.body.tasks)
+
+      if (update) {
+        const obj: IRotueUpdate = {
+          statusCode: 201,
+          message: 'collection have been updated',
+          updated: true
+        }
+
+        res.status(201).send(obj)
+      } else {
+        const obj: IRotueUpdate = {
+          statusCode: 204,
+          message: 'somthing when wrong with the update',
+          updated: false
+        }
+
+        res.status(204).send(obj)
+      }
+
     } else {
       const obj: IRoutes = {
         statusCode: 403,
