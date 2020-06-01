@@ -184,6 +184,15 @@ side.route('/tasks/:id')
       res.status(403).send(obj);
     }
   })
+  .delete(async (req: Request, res: Response) => {
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+
+    } else {
+      
+    }
+  })
 
 side.route('/tasks/move/:id')
   .put(async (req: Request, res: Response) => {
