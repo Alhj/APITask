@@ -5,7 +5,7 @@ import { Document } from 'mongoose'
 
 import Collection from '../../helpers/scheman/collection'
 import { checkKey } from '../../helpers/generate/ApiKey'
-import { updateCollection } from '../../helpers/dbhelp'
+import { updateCollection, dealteTask } from '../../helpers/dbhelp'
 import TaskCollection from '../../helpers/scheman/collection'
 import UserCollection from '../../helpers/scheman/user'
 
@@ -189,8 +189,16 @@ side.route('/tasks/:id')
 
     if (checkKey(token)) {
 
+      const taskDelate:boolean = await dealteTask(req.params.id, req.query.taskId);
+
+      res.status(204).send('delate')
     } else {
-      
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj);
     }
   })
 
