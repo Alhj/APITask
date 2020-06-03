@@ -5,9 +5,11 @@ import { Document } from 'mongoose'
 
 import Collection from '../../helpers/scheman/collection'
 import { checkKey } from '../../helpers/generate/ApiKey'
+import { dealteCollection} from '../../helpers/dbhelp'
 import { updateCollection, dealteTask } from '../../helpers/dbhelp'
 import TaskCollection from '../../helpers/scheman/collection'
 import UserCollection from '../../helpers/scheman/user'
+
 
 import { IRoutes, IRouteCollection } from '../../models/interface/routes'
 import { IRotueUpdate } from '../../models/interface/routes'
@@ -188,10 +190,9 @@ side.route('/tasks/:id')
     const token: string = req.header('authorization').substring(7)
 
     if (checkKey(token)) {
+      await dealteCollection(req.params.id);
 
-      const taskDelate:boolean = await dealteTask(req.params.id, req.query.taskId);
-
-      res.status(204).send('delate')
+      res.status(204).send()
     } else {
       const obj: IRoutes = {
         statusCode: 403,
@@ -202,7 +203,7 @@ side.route('/tasks/:id')
     }
   })
 
-side.route('/tasks/move/:id')
+side.route('/tasks/task/:id')
   .put(async (req: Request, res: Response) => {
     const token: string = req.header('authorization').substring(7)
 
@@ -227,6 +228,31 @@ side.route('/tasks/move/:id')
         res.status(204).send(obj)
       }
 
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj);
+    }
+  })
+  .delete(async (req: Request, res: Response) => {
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+
+      const taskDelate:boolean = await dealteTask(req.params.id, req.query.taskId);
+
+      // tslint:disable-next-line:no-console
+      console.log(taskDelate)
+
+      const obj: IRoutes = {
+        statusCode: 204,
+        message: 'task dealate'
+      }
+
+      res.status(204).send(obj)
     } else {
       const obj: IRoutes = {
         statusCode: 403,

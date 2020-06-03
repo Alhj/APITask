@@ -1,7 +1,8 @@
 import { IUpdate } from '../../models/interface/respons'
 import { ICollectionDoc } from '../../models/interface/collection'
-import { ITaskCollection } from '../../models/interface/task'
+import { ITaskCollection, ITask } from '../../models/interface/task'
 import Collection from '../scheman/collection'
+import collection from '../scheman/collection'
 
 export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body: IUpdate) => {
   try {
@@ -10,7 +11,7 @@ export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body
 
     coll.taskCollection = body.taskCollection
 
-    coll.save()
+    await coll.save()
 
     return true
   } catch (e) {
@@ -19,21 +20,56 @@ export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body
 }
 
 
-export const dealteTask: (collectionId: string, taskId: string) => Promise<boolean> = async(collectionId: string, taskId: string) => {
+export const dealteTask: (collectionId: string, taskId: string) => Promise<boolean> = async (collectionId: string, taskId: string) => {
   try {
 
     let coll: ICollectionDoc = await Collection.findById(collectionId)
-    coll.taskCollection.forEach((tasks:ITaskCollection) => {
-      // tslint:disable-next-line:no-console
-      console.log(tasks.task.length)
-      tasks.task.filter(task => task.id !== taskId)
-      // tslint:disable-next-line:no-console
-      console.log(tasks.task.length)
-      // tslint:disable-next-line:no-console
-      console.log()
+
+    coll.taskCollection.forEach((tasks: ITaskCollection) => {
+
+      const sortCollection: ITask[] = []
+
+      tasks.task.forEach((task: ITask) => {
+
+        if (task.id !== taskId) {
+          sortCollection.push(task)
+        }
+      })
+
+      tasks.task = sortCollection
     })
 
-    coll.save()
+    coll.taskCollection.forEach(t => {
+      t.task.forEach(x => {
+        // tslint:disable-next-line:no-console
+        console.log(x)
+      })
+    })
+
+    coll.markModified('object')
+
+    coll.save();
+
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
+
+export const dealteTaskCollection: () => Promise<boolean> = async () => {
+  try {
+
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
+export const dealteCollection: (id: string) => Promise<boolean> = async (id: string) => {
+  try {
+
+    await collection.findByIdAndDelete(id)
 
     return true
   } catch (e) {
