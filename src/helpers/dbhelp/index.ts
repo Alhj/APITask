@@ -56,9 +56,14 @@ export const dealteTask: (collectionId: string, taskId: string) => Promise<boole
   }
 }
 
-
-export const dealteTaskCollection: () => Promise<boolean> = async () => {
+export const dealteTaskCollection: (id: string, name: string) => Promise<boolean> = async (id: string, name: string) => {
   try {
+
+    let coll: ICollectionDoc = await Collection.findById(id)
+
+    coll.taskCollection.filter(task => task.name !== name)
+
+    coll.save()
 
     return true
   } catch (e) {

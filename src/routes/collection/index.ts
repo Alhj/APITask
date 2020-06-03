@@ -5,7 +5,7 @@ import { Document } from 'mongoose'
 
 import Collection from '../../helpers/scheman/collection'
 import { checkKey } from '../../helpers/generate/ApiKey'
-import { dealteCollection} from '../../helpers/dbhelp'
+import { dealteCollection, dealteTaskCollection } from '../../helpers/dbhelp'
 import { updateCollection, dealteTask } from '../../helpers/dbhelp'
 import TaskCollection from '../../helpers/scheman/collection'
 import UserCollection from '../../helpers/scheman/user'
@@ -203,6 +203,26 @@ side.route('/tasks/:id')
     }
   })
 
+side.route('/tasks/taskCollection/:id')
+  .delete(async (req: Request, res: Response) => {
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+
+      await dealteTaskCollection(req.params.id, req.query.name);
+
+      res.status(204).send()
+
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj)
+    }
+  })
+
 side.route('/tasks/task/:id')
   .put(async (req: Request, res: Response) => {
     const token: string = req.header('authorization').substring(7)
@@ -242,7 +262,7 @@ side.route('/tasks/task/:id')
 
     if (checkKey(token)) {
 
-      const taskDelate:boolean = await dealteTask(req.params.id, req.query.taskId);
+      const taskDelate: boolean = await dealteTask(req.params.id, req.query.taskId);
 
       // tslint:disable-next-line:no-console
       console.log(taskDelate)
