@@ -23,7 +23,13 @@ export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body
 export const dealteTask: (collectionId: string, taskId: string) => Promise<boolean> = async (collectionId: string, taskId: string) => {
   try {
 
+    let newBody:ITaskCollection[] = []
+
     let coll: ICollectionDoc = await Collection.findById(collectionId)
+
+
+    // tslint:disable-next-line:no-console
+    console.log(coll)
 
     coll.taskCollection.forEach((tasks: ITaskCollection) => {
 
@@ -37,14 +43,11 @@ export const dealteTask: (collectionId: string, taskId: string) => Promise<boole
       })
 
       tasks.task = sortCollection
+
+      newBody.push(tasks)
     })
 
-    coll.taskCollection.forEach(t => {
-      t.task.forEach(x => {
-        // tslint:disable-next-line:no-console
-        console.log(x)
-      })
-    })
+    coll.taskCollection = newBody
 
     coll.markModified('object')
 
@@ -61,7 +64,11 @@ export const dealteTaskCollection: (id: string, name: string) => Promise<boolean
 
     let coll: ICollectionDoc = await Collection.findById(id)
 
+
     coll.taskCollection.filter(task => task.name !== name)
+
+     // tslint:disable-next-line:no-console
+     console.log(coll)
 
     coll.save()
 

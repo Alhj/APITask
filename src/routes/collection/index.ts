@@ -209,7 +209,10 @@ side.route('/tasks/taskCollection/:id')
 
     if (checkKey(token)) {
 
-      await dealteTaskCollection(req.params.id, req.query.name);
+      const test = await dealteTaskCollection(req.params.id, req.query.name);
+
+      // tslint:disable-next-line:no-console
+      console.log(test)
 
       res.status(204).send()
 
