@@ -21,6 +21,49 @@ const side: Router = Router()
 
 
 side.route('/')
+  .get(async (req: Request, res: Response) => {
+
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+
+      let collections: ICollectionDoc[] = []
+
+      const userName: string = req.query.name;
+
+      const findCollection: ICollectionDoc[] = await Collection.find();
+
+      findCollection.forEach((collection: ICollectionDoc) => {
+        let userFound: boolean
+
+        collection.users.forEach((user: string) => {
+          if (user.toLowerCase() === userName.toLowerCase()) {
+            userFound = true
+          }
+        })
+
+        if (userFound) {
+          collections.push(collection)
+        }
+      });
+
+      const obj: IRouteCollection = {
+        statusCode: 200,
+        message: '',
+        taskCollection: collections
+      }
+
+      res.status(200).send(obj)
+
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj);
+    }
+  })
   .post(async (req: Request, res: Response) => {
 
     const token: string = req.header('authorization').substring(7)
@@ -66,52 +109,7 @@ side.route('/')
     }
   })
 
-side.route('/:name')
-  .get(async (req: Request, res: Response) => {
-
-    const token: string = req.header('authorization').substring(7)
-
-    if (checkKey(token)) {
-
-      let collections: ICollectionDoc[] = []
-
-      const userName: string = req.params.name;
-
-      const findCollection: ICollectionDoc[] = await Collection.find();
-
-      findCollection.forEach((collection: ICollectionDoc) => {
-        let userFound: boolean
-
-        collection.users.forEach((user: string) => {
-          if (user.toLowerCase() === userName.toLowerCase()) {
-            userFound = true
-          }
-        })
-
-        if (userFound) {
-          collections.push(collection)
-        }
-      });
-
-      const obj: IRouteCollection = {
-        statusCode: 200,
-        message: '',
-        taskCollection: collections
-      }
-
-      res.status(200).send(obj)
-
-    } else {
-      const obj: IRoutes = {
-        statusCode: 403,
-        message: 'not a valid token in the header on no token in the header'
-      }
-
-      res.status(403).send(obj);
-    }
-  })
-
-side.route('/tasks/:id')
+side.route('/:id')
   .get(async (req: Request, res: Response) => {
     const token: string = req.header('authorization').substring(7)
 
@@ -147,7 +145,7 @@ side.route('/tasks/:id')
       res.status(403).send(obj);
     }
   })
-  .put(async (req: Request, res: Response) => {
+  .post(async (req: Request, res: Response) => {
     const token: string = req.header('authorization').substring(7)
 
     if (checkKey(token)) {
