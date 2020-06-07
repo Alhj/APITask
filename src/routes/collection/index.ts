@@ -152,9 +152,6 @@ side.route('/:id')
 
       const body: IUpdate = req.body
 
-      // tslint:disable-next-line:no-console
-      console.log(body)
-
       const update: boolean = await updateCollection(body)
 
       if (update) {
@@ -207,10 +204,7 @@ side.route('/tasks/taskCollection/:id')
 
     if (checkKey(token)) {
 
-      const test = await dealteTaskCollection(req.params.id, req.query.name);
-
-      // tslint:disable-next-line:no-console
-      console.log(test)
+      await dealteTaskCollection(req.params.id, req.query.name);
 
       res.status(204).send()
 

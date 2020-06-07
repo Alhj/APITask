@@ -19,7 +19,6 @@ export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body
   }
 }
 
-
 export const dealteTask: (collectionId: string, taskId: string) => Promise<boolean> = async (collectionId: string, taskId: string) => {
   try {
 
@@ -33,17 +32,7 @@ export const dealteTask: (collectionId: string, taskId: string) => Promise<boole
 
     })
 
-    let newBody: ITaskCollection[] = []
-
-    coll.taskCollection.forEach((tasks: ITaskCollection) => {
-
-      tasks.task = tasks.task.filter(task => task.id !== taskId)
-
-      newBody.push(tasks)
-    })
-
-    coll.taskCollection = newBody
-
+    coll.taskCollection = remove(coll, taskId);
 
     await coll.save()
 
@@ -86,4 +75,19 @@ export const dealteCollection: (id: string) => Promise<boolean> = async (id: str
   } catch (e) {
     return false
   }
+}
+
+
+
+const remove: (coll:ICollectionDoc, id: string) => ITaskCollection[] = (coll:ICollectionDoc, taskId:string) => {
+  let filterColl: ITaskCollection[] = [];
+
+  coll.taskCollection.forEach((tasks: ITaskCollection) => {
+
+    tasks.task = tasks.task.filter(task => task.id !== taskId)
+
+  filterColl.push(tasks)
+  })
+
+  return filterColl
 }
