@@ -257,10 +257,7 @@ side.route('/tasks/task/:id')
 
     if (checkKey(token)) {
 
-      const taskDelate: boolean = await dealteTask(req.params.id, req.query.taskId);
-
-      // tslint:disable-next-line:no-console
-      console.log(taskDelate)
+      await dealteTask(req.params.id, req.query.taskId);
 
       const obj: IRoutes = {
         statusCode: 204,

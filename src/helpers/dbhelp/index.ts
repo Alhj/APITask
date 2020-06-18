@@ -24,24 +24,11 @@ export const dealteTask: (collectionId: string, taskId: string) => Promise<boole
 
     let coll: ICollectionDoc = await Collection.findById(collectionId)
 
-
-    coll.taskCollection.forEach((tasks: ITaskCollection) => {
-
-      // tslint:disable-next-line:no-console
-      console.log(tasks.task.length)
-
-    })
-
     coll.taskCollection = remove(coll, taskId);
 
+    coll.markModified('taskCollection')
+
     await coll.save()
-
-    coll.taskCollection.forEach((tasks: ITaskCollection) => {
-
-      // tslint:disable-next-line:no-console
-      console.log(tasks.task.length)
-
-    })
 
     return true
   } catch (e) {
@@ -54,11 +41,12 @@ export const dealteTaskCollection: (id: string, name: string) => Promise<boolean
 
     const coll: ICollectionDoc = await Collection.findById(id)
 
-
     coll.taskCollection = coll.taskCollection.filter(task => task.name.toLowerCase() !== name.toLowerCase())
 
+    coll.markModified('taskCollection')
 
-    coll.save()
+    await coll.save()
+
 
     return true
   } catch (e) {
@@ -79,14 +67,14 @@ export const dealteCollection: (id: string) => Promise<boolean> = async (id: str
 
 
 
-const remove: (coll:ICollectionDoc, id: string) => ITaskCollection[] = (coll:ICollectionDoc, taskId:string) => {
+const remove: (coll: ICollectionDoc, id: string) => ITaskCollection[] = (coll: ICollectionDoc, taskId: string) => {
   let filterColl: ITaskCollection[] = [];
 
   coll.taskCollection.forEach((tasks: ITaskCollection) => {
 
     tasks.task = tasks.task.filter(task => task.id !== taskId)
 
-  filterColl.push(tasks)
+    filterColl.push(tasks)
   })
 
   return filterColl
