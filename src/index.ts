@@ -8,7 +8,7 @@ import { connectToDb } from './helpers/db/'
 import { obj404 } from './models/staticRespons/statusCodeObj'
 
 const app: Express = express()
-const port = 8080
+const port = process.env.PORT || 8080
 
 connectToDb()
 
