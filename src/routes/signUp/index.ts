@@ -22,7 +22,6 @@ side.route('/')
     res.status(200).send(obj)
   })
   .post(async (req: Request, res: Response) => {
-
     const user: IUser = req.body
 
     if (validateUser(user)) {
@@ -39,7 +38,6 @@ side.route('/')
         })
 
         await newUser.save()
-
         res.status(201).send(obj)
       } catch (e) {
         const obj: IRoutes = {
