@@ -1,8 +1,12 @@
 import { IUpdate } from '../../models/interface/respons'
 import { ICollectionDoc } from '../../models/interface/collection'
-import { ITaskCollection, ITask } from '../../models/interface/task'
+import { ITaskCollection } from '../../models/interface/task'
+import { ICollectionRequestDoc, ICollectionRequestBody } from '../../models/interface/requestCollection'
 import Collection from '../scheman/collection'
 import collection from '../scheman/collection'
+import RequestCollection from '../scheman/collectionRequest'
+import TaskCollection from '../scheman/collection'
+
 
 export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body: IUpdate) => {
   try {
@@ -65,7 +69,23 @@ export const dealteCollection: (id: string) => Promise<boolean> = async (id: str
   }
 }
 
+export const request: (id: string) => Promise<boolean> = async (id: string) => {
+  try {
+    const collectionRequest: ICollectionRequestDoc = await RequestCollection.findById(id)
 
+    const collection: ICollectionDoc = await TaskCollection.findOne(collectionRequest.collection)
+
+    collection.users.push(collectionRequest.user)
+
+    collection.markModified('users')
+
+    await collection.save()
+    
+    return true
+  } catch (e) {
+    return false
+  }
+}
 
 const remove: (coll: ICollectionDoc, id: string) => ITaskCollection[] = (coll: ICollectionDoc, taskId: string) => {
   let filterColl: ITaskCollection[] = [];

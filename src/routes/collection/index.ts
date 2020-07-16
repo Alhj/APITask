@@ -2,7 +2,6 @@ import { Router } from 'express'
 import { Request, Response } from 'express'
 import { Document } from 'mongoose'
 
-
 import Collection from '../../helpers/scheman/collection'
 import { checkKey } from '../../helpers/generate/ApiKey'
 import { dealteCollection, dealteTaskCollection } from '../../helpers/dbhelp'
@@ -15,8 +14,7 @@ import { IRoutes, IRouteCollection } from '../../models/interface/routes'
 import { IRotueUpdate } from '../../models/interface/routes'
 import { ICollectionDoc } from '../../models/interface/collection'
 import { IUpdate } from '../../models/interface/respons'
-import { ICollectionRequest, ICollectionRequestBody } from '../../models/interface/requestCollection'
-
+import { ICollectionRequestDoc, ICollectionRequestBody } from '../../models/interface/requestCollection'
 
 const side: Router = Router()
 
@@ -312,7 +310,13 @@ side.route('/tasks/request/:id')
     const token: string = req.header('authorization').substring(7)
 
     if (checkKey(token)) {
+      const id: string = req.params.id
 
+      if (true) {
+
+      } else {
+
+      }
     } else {
       const obj: IRoutes = {
         statusCode: 403,
@@ -333,7 +337,7 @@ side.route('/tasks/request/:id')
 
         const obj: IRoutes = {
           statusCode: 204,
-          message:'request has been dealted'
+          message: 'request has been dealted'
         }
 
         res.status(204).send(obj)
