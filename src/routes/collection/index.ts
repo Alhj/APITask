@@ -15,7 +15,7 @@ import { IRoutes, IRouteCollection } from '../../models/interface/routes'
 import { IRotueUpdate } from '../../models/interface/routes'
 import { ICollectionDoc } from '../../models/interface/collection'
 import { IUpdate } from '../../models/interface/respons'
-import {ICollectionRequest, ICollectionRequestBody} from '../../models/interface/requestCollection'
+import { ICollectionRequest, ICollectionRequestBody } from '../../models/interface/requestCollection'
 
 
 const side: Router = Router()
@@ -281,9 +281,21 @@ side.route('/tasks/request')
     const token: string = req.header('authorization').substring(7)
 
     if (checkKey(token)) {
-      const body:ICollectionRequestBody = req.body;
-       
-      
+      const body: ICollectionRequestBody = req.body;
+
+      const newRequest: Document = new RequestCollection({
+        requestCollection: body.requestCollection,
+        user: body.user
+      })
+
+      await newRequest.save()
+
+      const obj: IRoutes = {
+        statusCode: 201,
+        message: 'request has been added'
+      }
+
+      res.status(201).send(obj)
 
     } else {
       const obj: IRoutes = {
@@ -291,7 +303,56 @@ side.route('/tasks/request')
         message: 'not a valid token in the header on no token in the header'
       }
 
-      res.status(403).send(obj);
+      res.status(403).send(obj)
+    }
+  })
+
+side.route('/tasks/request/:id')
+  .put(async (req: Request, res: Response) => {
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj)
+    }
+  })
+  .delete(async (req: Request, res: Response) => {
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+      try {
+        const id: string = req.params.id
+
+        await RequestCollection.findByIdAndDelete(id)
+
+        const obj: IRoutes = {
+          statusCode: 204,
+          message:'request has been dealted'
+        }
+
+        res.status(204).send(obj)
+
+      } catch (e) {
+        const obj: IRoutes = {
+          statusCode: 403,
+          message: 'not right id'
+        }
+
+        res.status(403).send(obj)
+      }
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj)
     }
   })
 
