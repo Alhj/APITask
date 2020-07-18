@@ -80,12 +80,26 @@ export const request: (id: string) => Promise<boolean> = async (id: string) => {
     collection.markModified('users')
 
     await collection.save()
-    
+
+    await requestRemove(id)
+
     return true
   } catch (e) {
     return false
   }
 }
+
+export const requestRemove: (id: string) => Promise<boolean> = async (id: string) => {
+  try {
+
+    await RequestCollection.findByIdAndDelete(id)
+
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
 
 const remove: (coll: ICollectionDoc, id: string) => ITaskCollection[] = (coll: ICollectionDoc, taskId: string) => {
   let filterColl: ITaskCollection[] = [];

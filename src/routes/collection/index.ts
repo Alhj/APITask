@@ -6,6 +6,7 @@ import Collection from '../../helpers/scheman/collection'
 import { checkKey } from '../../helpers/generate/ApiKey'
 import { dealteCollection, dealteTaskCollection } from '../../helpers/dbhelp'
 import { updateCollection, dealteTask } from '../../helpers/dbhelp'
+import { request, requestRemove } from '../../helpers/dbhelp'
 import TaskCollection from '../../helpers/scheman/collection'
 import UserCollection from '../../helpers/scheman/user'
 import RequestCollection from '../../helpers/scheman/collectionRequest'
@@ -14,7 +15,7 @@ import { IRoutes, IRouteCollection } from '../../models/interface/routes'
 import { IRotueUpdate } from '../../models/interface/routes'
 import { ICollectionDoc } from '../../models/interface/collection'
 import { IUpdate } from '../../models/interface/respons'
-import { ICollectionRequestDoc, ICollectionRequestBody } from '../../models/interface/requestCollection'
+import { ICollectionRequestBody } from '../../models/interface/requestCollection'
 
 const side: Router = Router()
 
@@ -311,11 +312,22 @@ side.route('/tasks/request/:id')
 
     if (checkKey(token)) {
       const id: string = req.params.id
+      
+      const uppdatingRequest:boolean = await request(id) 
 
-      if (true) {
+      if (uppdatingRequest) {
+        const obj:IRoutes = {
+          statusCode: 203,
+          message: 'Request has been granted'
+        }
 
+        res.status(203).send(obj)
       } else {
-
+        const obj:IRoutes = {
+          statusCode:404,
+          message: 'somthing whent wrong'
+        }
+        res.status(404).send(obj)
       }
     } else {
       const obj: IRoutes = {
