@@ -119,7 +119,6 @@ side.route('/:id')
 
       try {
         const taskCollection: ICollectionDoc = await TaskCollection.findById(id);
-
         const obj: IRouteCollection = {
           statusCode: 200,
           message: `found a collection with id ${id}`,
