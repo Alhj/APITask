@@ -1,11 +1,12 @@
 import { IUpdate } from '../../models/interface/respons'
 import { ICollectionDoc } from '../../models/interface/collection'
 import { ITaskCollection } from '../../models/interface/task'
-import { ICollectionRequestDoc, ICollectionRequestBody } from '../../models/interface/requestCollection'
+import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
 import Collection from '../scheman/collection'
 import collection from '../scheman/collection'
 import RequestCollection from '../scheman/collectionRequest'
 import TaskCollection from '../scheman/collection'
+import User from '../scheman/user'
 
 
 export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body: IUpdate) => {
@@ -97,6 +98,16 @@ export const requestRemove: (id: string) => Promise<boolean> = async (id: string
     return true
   } catch (e) {
     return false
+  }
+}
+
+export const validateUser: (name: string) => Promise<boolean> = async (name: string) => { 
+  const findUser = await User.findOne({name:name})
+
+  if(findUser) {
+    return true
+  } else {
+  return false
   }
 }
 

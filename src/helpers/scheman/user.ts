@@ -3,7 +3,7 @@ import { genSalt, hash, compare } from 'bcrypt'
 import { IUser } from '../../models/interface/user'
 
 const userSchema: Schema = new Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique:true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true }
 });
