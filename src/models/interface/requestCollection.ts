@@ -1,12 +1,12 @@
 import { Document } from 'mongoose'
 
 export interface ICollectionRequestDoc extends Document {
-  requestCollection?: string
+  requestCollectionId?: string
   user?: string
 }
 
 
 export interface ICollectionRequestBody {
-  requestCollection: string
+  requestCollectionId: string
   user: string
 }

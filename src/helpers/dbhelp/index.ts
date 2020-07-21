@@ -1,3 +1,5 @@
+import { Document } from 'mongoose'
+
 import { IUpdate } from '../../models/interface/respons'
 import { ICollectionDoc } from '../../models/interface/collection'
 import { ITaskCollection } from '../../models/interface/task'
@@ -114,6 +116,12 @@ export const validateUser: (name: string) => Promise<boolean> = async (name: str
   } catch (e) {
     return false
   }
+}
+
+export const checkCollectionRequest: (user: string, requestCollectionId: string) => Promise<boolean> = async (user: string, requestCollectionId: string) => {
+  const request: Document[] = await RequestCollection.find({ requestCollectionId: requestCollectionId, user: user })
+
+  return request.length >= 1
 }
 
 

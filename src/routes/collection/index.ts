@@ -6,7 +6,7 @@ import Collection from '../../helpers/scheman/collection'
 import { checkKey } from '../../helpers/generate/ApiKey'
 import { dealteCollection, dealteTaskCollection } from '../../helpers/dbhelp'
 import { updateCollection, dealteTask } from '../../helpers/dbhelp'
-import { request } from '../../helpers/dbhelp'
+import { request, checkCollectionRequest } from '../../helpers/dbhelp'
 import TaskCollection from '../../helpers/scheman/collection'
 import UserCollection from '../../helpers/scheman/user'
 import RequestCollection from '../../helpers/scheman/collectionRequest'
@@ -281,20 +281,30 @@ side.route('/tasks/request')
     if (checkKey(token)) {
       const body: ICollectionRequestBody = req.body;
 
-      const newRequest: Document = new RequestCollection({
-        requestCollection: body.requestCollection,
-        user: body.user
-      })
+      const alradyExist: boolean = await checkCollectionRequest(body.user, body.requestCollectionId)
+      if (!alradyExist) {
+        const newRequest: Document = new RequestCollection({
+          requestCollectionId: body.requestCollectionId,
+          user: body.user
+        })
 
-      await newRequest.save()
+        await newRequest.save()
 
-      const obj: IRoutes = {
-        statusCode: 201,
-        message: 'request has been added'
+        const obj: IRoutes = {
+          statusCode: 201,
+          message: 'request has been added'
+        }
+
+        res.status(201).send(obj)
+      } else {
+
+        const obj: IRoutes = {
+          statusCode: 204,
+          message: 'Request alrady exists'
+        }
+
+        res.status(204).send(obj)
       }
-
-      res.status(201).send(obj)
-
     } else {
       const obj: IRoutes = {
         statusCode: 403,
@@ -311,19 +321,19 @@ side.route('/tasks/request/:id')
 
     if (checkKey(token)) {
       const id: string = req.params.id
-      
-      const uppdatingRequest:boolean = await request(id) 
+
+      const uppdatingRequest: boolean = await request(id)
 
       if (uppdatingRequest) {
-        const obj:IRoutes = {
+        const obj: IRoutes = {
           statusCode: 203,
           message: 'Request has been granted'
         }
 
         res.status(203).send(obj)
       } else {
-        const obj:IRoutes = {
-          statusCode:404,
+        const obj: IRoutes = {
+          statusCode: 404,
           message: 'somthing whent wrong'
         }
         res.status(404).send(obj)

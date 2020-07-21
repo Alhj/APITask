@@ -14,15 +14,11 @@ side.route('/:name')
     const token: string = req.header('authorization').substring(7)
     if (checkKey(token)) {
 
-      const name: string = req.params.name
-
-      console.log(name)
-
-      const userExixt:boolean = await validateUser(name)      
+      const userExixt: boolean = await validateUser(req.params.name)
 
       const obj: IRotueUserV = {
-        statusCode:200,
-        message:'user validation',
+        statusCode: 200,
+        message: 'user validation',
         validUser: userExixt
       }
 
@@ -37,4 +33,4 @@ side.route('/:name')
     }
   })
 
-  module.exports = side
+module.exports = side

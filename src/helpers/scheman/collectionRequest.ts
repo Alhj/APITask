@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose'
 
 
 const CollectionRequest: Schema = new Schema({
-  requestCollection: {
+  requestCollectionId: {
     type:String
   },
   user:{
