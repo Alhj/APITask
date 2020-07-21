@@ -2,6 +2,7 @@ import { IUpdate } from '../../models/interface/respons'
 import { ICollectionDoc } from '../../models/interface/collection'
 import { ITaskCollection } from '../../models/interface/task'
 import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
+import { IUser } from '../../models/interface/user'
 import Collection from '../scheman/collection'
 import collection from '../scheman/collection'
 import RequestCollection from '../scheman/collectionRequest'
@@ -101,13 +102,17 @@ export const requestRemove: (id: string) => Promise<boolean> = async (id: string
   }
 }
 
-export const validateUser: (name: string) => Promise<boolean> = async (name: string) => { 
-  const findUser = await User.findOne({name:name})
+export const validateUser: (name: string) => Promise<boolean> = async (name: string) => {
+  try {
+    const findUser: IUser = await User.findOne({ name: name })
 
-  if(findUser) {
-    return true
-  } else {
-  return false
+    if (findUser) {
+      return true
+    } else {
+      return false
+    }
+  } catch (e) {
+    return false
   }
 }
 

@@ -22,3 +22,7 @@ export interface IRotueDbUser extends IRoutes {
 export interface IRotueUpdate extends IRoutes {
   updated: boolean
 }
+
+export interface IRotueUserV extends IRoutes {
+  validUser: boolean
+}
