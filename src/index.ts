@@ -27,6 +27,8 @@ app.use('/collection', require('./routes/collection'))
 
 app.use('/signIn', require('./routes/signIn'))
 
+app.use('/request', require('./routes/request'))
+
 app.use('/validation', require('./routes/validation'))
 
 app.use((req: Request, res: Response) => { res.status(404).send(obj404) })

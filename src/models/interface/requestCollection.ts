@@ -10,3 +10,8 @@ export interface ICollectionRequestBody {
   requestCollectionId: string
   user: string
 }
+
+export interface Iinfo {
+  name: string
+  isUser:boolean
+}

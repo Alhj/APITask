@@ -1,5 +1,6 @@
 import { IUserDb } from './user'
 import { ICollection, ICollectionDoc } from './collection'
+import { ICollectionRequestDoc } from './requestCollection'
 
 export interface IRoutes {
   statusCode: number
@@ -25,4 +26,8 @@ export interface IRotueUpdate extends IRoutes {
 
 export interface IRotueUserV extends IRoutes {
   validUser: boolean
+}
+
+export interface IRotueRequest extends IRoutes {
+  requestCollection: ICollectionRequestDoc[]
 }
