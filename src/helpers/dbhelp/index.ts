@@ -77,7 +77,7 @@ export const request: (id: string) => Promise<boolean> = async (id: string) => {
   try {
     const collectionRequest: ICollectionRequestDoc = await RequestCollection.findById(id)
 
-    const collection: ICollectionDoc = await TaskCollection.findOne(collectionRequest.collection)
+    const collection: ICollectionDoc = await TaskCollection.findById(collectionRequest.requestCollectionId)
 
     collection.users.push(collectionRequest.user)
 
