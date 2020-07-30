@@ -281,10 +281,13 @@ side.route('/tasks/request')
     if (checkKey(token)) {
       const body: ICollectionRequestBody = req.body;
 
+      console.log(body)
+
       const alradyExist: boolean = await checkCollectionRequest(body.user, body.requestCollectionId)
       if (!alradyExist) {
         const newRequest: Document = new RequestCollection({
           requestCollectionId: body.requestCollectionId,
+          collectionName: body.collectionName,
           user: body.user
         })
 

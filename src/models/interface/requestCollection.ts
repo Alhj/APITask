@@ -8,6 +8,7 @@ export interface ICollectionRequestDoc extends Document {
 
 export interface ICollectionRequestBody {
   requestCollectionId: string
+  collectionName: string
   user: string
 }
 
