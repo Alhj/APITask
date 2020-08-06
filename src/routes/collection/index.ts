@@ -184,16 +184,25 @@ side.route('/:id')
     const token: string = req.header('authorization').substring(7)
 
     if (checkKey(token)) {
-      await dealteCollection(req.params.id);
+      console.log(req.params)
+      const collectionDealte: boolean = await dealteCollection(req.params.id);
+      if (collectionDealte) {
+        res.status(204).send()
+      } else {
+        const obj: IRoutes = {
+          statusCode: 403,
+          message: 'somthing whent wrong'
+        }
 
-      res.status(204).send()
+        res.status(403).send(obj);
+      }
     } else {
       const obj: IRoutes = {
-        statusCode: 403,
+        statusCode: 400,
         message: 'not a valid token in the header on no token in the header'
       }
 
-      res.status(403).send(obj);
+      res.status(400).send(obj);
     }
   })
 
