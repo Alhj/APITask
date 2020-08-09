@@ -2,7 +2,9 @@ import { Router } from 'express'
 import { Request, Response } from 'express'
 
 import { checkKey } from '../../helpers/generate/ApiKey'
+import { validateInfo } from '../../helpers/validation/validatRequestLink'
 import RequestCollection from '../../helpers/scheman/collectionRequest'
+import RequestLink from '../../helpers/scheman/requestLink'
 
 import { IRoutes, IRotueRequest } from '../../models/interface/routes'
 import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
@@ -27,16 +29,16 @@ side.route('/')
         }
 
         res.status(200).send(obj)
-      } else { 
-        
-        const collectionRequest: ICollectionRequestDoc[] = await RequestCollection.find({requestCollectionId:name})
+      } else {
+
+        const collectionRequest: ICollectionRequestDoc[] = await RequestCollection.find({ requestCollectionId: name })
 
         const obj: IRotueRequest = {
           statusCode: 200,
           message: 'collection request',
           requestCollection: collectionRequest
         }
-        res.status(200).send(obj) 
+        res.status(200).send(obj)
       }
 
     } else {
@@ -49,4 +51,21 @@ side.route('/')
     }
   })
 
-  module.exports = side
+
+side.route('/genereateLink')
+  .get(async (req: Request, res: Response) => {
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj)
+    }
+  })
+
+module.exports = side
