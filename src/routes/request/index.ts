@@ -8,6 +8,7 @@ import RequestLink from '../../helpers/scheman/requestLink'
 
 import { IRoutes, IRotueRequest } from '../../models/interface/routes'
 import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
+import { IGetRequestLinkCredidsels } from '../../models/interface/requestLink'
 
 const side: Router = Router()
 
@@ -57,6 +58,11 @@ side.route('/genereateLink')
     const token: string = req.header('authorization').substring(7)
 
     if (checkKey(token)) {
+      const credidsels: IGetRequestLinkCredidsels = {
+        name: req.query.name,
+        collectionId: req.query.collectionId
+      }
+
 
     } else {
       const obj: IRoutes = {

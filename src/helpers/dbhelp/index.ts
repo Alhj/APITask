@@ -1,15 +1,18 @@
 import { Document } from 'mongoose'
 
-import { IUpdate } from '../../models/interface/respons'
-import { ICollectionDoc } from '../../models/interface/collection'
-import { ITaskCollection } from '../../models/interface/task'
-import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
-import { IUser } from '../../models/interface/user'
+
 import Collection from '../scheman/collection'
 import collection from '../scheman/collection'
 import RequestCollection from '../scheman/collectionRequest'
 import TaskCollection from '../scheman/collection'
 import User from '../scheman/user'
+
+import { IUpdate } from '../../models/interface/respons'
+import { ICollectionDoc } from '../../models/interface/collection'
+import { ITaskCollection } from '../../models/interface/task'
+import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
+import { IUser } from '../../models/interface/user'
+import { IGetRequestLinkCredidsels } from '../../models/interface/requestLink'
 
 
 export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body: IUpdate) => {
@@ -122,6 +125,10 @@ export const checkCollectionRequest: (user: string, requestCollectionId: string)
   const request: Document[] = await RequestCollection.find({ requestCollectionId: requestCollectionId, user: user })
 
   return request.length >= 1
+}
+
+export const validateRequestLink: (credidsels: IGetRequestLinkCredidsels) => Promise<boolean> = async () => {
+  return false
 }
 
 
