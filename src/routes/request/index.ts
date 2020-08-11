@@ -3,12 +3,16 @@ import { Request, Response } from 'express'
 
 import { checkKey } from '../../helpers/generate/ApiKey'
 import { validateInfo } from '../../helpers/validation/validatRequestLink'
+import { validateRequestLink } from '../../helpers/dbhelp/'
+import { genereateLinkKey } from '../../helpers/generate/ApiKey'
+
 import RequestCollection from '../../helpers/scheman/collectionRequest'
 import RequestLink from '../../helpers/scheman/requestLink'
 
-import { IRoutes, IRotueRequest } from '../../models/interface/routes'
+import { IRoutes, IRotueRequest, IRouteRequestLink } from '../../models/interface/routes'
 import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
 import { IGetRequestLinkCredidsels } from '../../models/interface/requestLink'
+import user from '../../helpers/scheman/user'
 
 const side: Router = Router()
 
@@ -63,6 +67,26 @@ side.route('/genereateLink')
         collectionId: req.query.collectionId
       }
 
+      const userFind = await validateRequestLink(credidsels)
+
+      if (userFind) {
+
+        const key: string = genereateLinkKey()
+
+        const obj: IRouteRequestLink = {
+          statusCode: 200,
+          message: '',
+          key: key
+        }
+        res.status(200).send(obj)
+      } else {
+        const obj: IRoutes = {
+          statusCode: 403,
+          message: 'not a user in collection'
+        }
+
+        res.status(403).send(obj)
+      }
 
     } else {
       const obj: IRoutes = {

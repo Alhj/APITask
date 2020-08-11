@@ -4,6 +4,7 @@ import { Document } from 'mongoose'
 import Collection from '../scheman/collection'
 import collection from '../scheman/collection'
 import RequestCollection from '../scheman/collectionRequest'
+import RequestLink from '../scheman/requestLink'
 import TaskCollection from '../scheman/collection'
 import User from '../scheman/user'
 
@@ -127,7 +128,18 @@ export const checkCollectionRequest: (user: string, requestCollectionId: string)
   return request.length >= 1
 }
 
-export const validateRequestLink: (credidsels: IGetRequestLinkCredidsels) => Promise<boolean> = async () => {
+export const validateRequestLink: (credidsels: IGetRequestLinkCredidsels) => Promise<boolean> = async (credidsels: IGetRequestLinkCredidsels) => {
+  try {
+    const collection: ICollectionDoc = await RequestCollection.findById(credidsels.collectionId)
+
+    const index: number = collection.users.findIndex((name) => name === credidsels.collectionId)
+
+    return index >= 0
+
+  } catch (e) {
+
+  }
+
   return false
 }
 
