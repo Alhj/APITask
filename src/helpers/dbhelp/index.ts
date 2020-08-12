@@ -2,7 +2,6 @@ import { Document } from 'mongoose'
 
 
 import Collection from '../scheman/collection'
-import collection from '../scheman/collection'
 import RequestCollection from '../scheman/collectionRequest'
 import RequestLink from '../scheman/requestLink'
 import TaskCollection from '../scheman/collection'
@@ -13,8 +12,8 @@ import { ICollectionDoc } from '../../models/interface/collection'
 import { ITaskCollection } from '../../models/interface/task'
 import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
 import { IUser } from '../../models/interface/user'
-import { IGetRequestLinkCredidsels } from '../../models/interface/requestLink'
-
+import { IGetRequestLinkCredidsels, IRequestLink } from '../../models/interface/requestLink'
+import { IReqLinkDoc, IReqLink } from '../../models/interface/requestLink'
 
 export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body: IUpdate) => {
   try {
@@ -69,7 +68,7 @@ export const dealteTaskCollection: (id: string, name: string) => Promise<boolean
 export const dealteCollection: (id: string) => Promise<boolean> = async (id: string) => {
   try {
 
-    await collection.findByIdAndDelete(id)
+    await Collection.findByIdAndDelete(id)
 
     return true
   } catch (e) {
@@ -130,19 +129,43 @@ export const checkCollectionRequest: (user: string, requestCollectionId: string)
 
 export const validateRequestLink: (credidsels: IGetRequestLinkCredidsels) => Promise<boolean> = async (credidsels: IGetRequestLinkCredidsels) => {
   try {
-    const collection: ICollectionDoc = await RequestCollection.findById(credidsels.collectionId)
+    
+    const collection: ICollectionDoc = await Collection.findById(credidsels.collectionId)
 
-    const index: number = collection.users.findIndex((name) => name === credidsels.collectionId)
-
+    const index: number = collection.users.findIndex((name) => name === credidsels.name)
+    
     return index >= 0
 
   } catch (e) {
-
+    return false
   }
-
-  return false
 }
 
+export const addUserToCollection: (requestInfo: IRequestLink) => Promise<boolean> = async (requestInfo: IRequestLink) => {
+  try {
+
+    let request: IReqLinkDoc = await RequestLink.findById(requestInfo.requestLinkId)
+
+    let coll: ICollectionDoc = await Collection.findById(request.collectionId)
+
+    const index: number = coll.users.findIndex((user) => requestInfo.name === user)
+
+    if (index >= 0) {
+      throw new Error()
+    }
+
+    coll.users.push(requestInfo.name)
+
+    coll.markModified('users')
+
+    await coll.save()
+
+    return true
+  
+  } catch (e) {
+    return false
+  }
+}
 
 const remove: (coll: ICollectionDoc, id: string) => ITaskCollection[] = (coll: ICollectionDoc, taskId: string) => {
   let filterColl: ITaskCollection[] = [];

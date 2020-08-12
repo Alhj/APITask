@@ -6,7 +6,7 @@ const requestLink: Schema = new Schema({
     type: String,
     required: true
   },
-  collectionName: {
+  collectionId: {
     type: String,
     required: true
   }

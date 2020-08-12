@@ -35,5 +35,5 @@ export const genereateLinkKey: () => string = () => {
   const request: string = process.env.REQUEST
   const secret: string = process.env.SECREAT
 
-  return sign({ data: request }, secret)
+  return sign({ data: request }, secret, {expiresIn: '24h'})
 }

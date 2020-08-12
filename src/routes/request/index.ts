@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import { Request, Response } from 'express'
+import { Document } from 'mongoose'
 
 import { checkKey } from '../../helpers/generate/ApiKey'
 import { validateInfo } from '../../helpers/validation/validatRequestLink'
-import { validateRequestLink } from '../../helpers/dbhelp/'
+import { validateRequestLink, addUserToCollection } from '../../helpers/dbhelp/'
 import { genereateLinkKey } from '../../helpers/generate/ApiKey'
 
 import RequestCollection from '../../helpers/scheman/collectionRequest'
@@ -11,8 +12,7 @@ import RequestLink from '../../helpers/scheman/requestLink'
 
 import { IRoutes, IRotueRequest, IRouteRequestLink } from '../../models/interface/routes'
 import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
-import { IGetRequestLinkCredidsels } from '../../models/interface/requestLink'
-import user from '../../helpers/scheman/user'
+import { IGetRequestLinkCredidsels, IRequestLink } from '../../models/interface/requestLink'
 
 const side: Router = Router()
 
@@ -57,7 +57,7 @@ side.route('/')
   })
 
 
-side.route('/genereateLink')
+side.route('/requestLink')
   .get(async (req: Request, res: Response) => {
     const token: string = req.header('authorization').substring(7)
 
@@ -67,15 +67,22 @@ side.route('/genereateLink')
         collectionId: req.query.collectionId
       }
 
-      const userFind = await validateRequestLink(credidsels)
+      const userFind:boolean = await validateRequestLink(credidsels)
 
       if (userFind) {
 
         const key: string = genereateLinkKey()
 
+        const doc: Document = new RequestLink({
+          linkId: key,
+          collectionId: credidsels.collectionId
+        })
+
+        doc.save()
+
         const obj: IRouteRequestLink = {
           statusCode: 200,
-          message: '',
+          message: 'a request link key have been created',
           key: key
         }
         res.status(200).send(obj)
@@ -97,5 +104,49 @@ side.route('/genereateLink')
       res.status(403).send(obj)
     }
   })
+  .post(async (req: Request, res: Response) => {
+    const token: string = req.header('authorization').substring(7)
+
+    if (checkKey(token)) {
+      const requestLinkInfo: IRequestLink = {
+        name: req.query.name,
+        requestLinkId: req.query.id
+      }
+      if (validateInfo(requestLinkInfo.requestLinkId)) {
+
+        const userAdd: boolean = await addUserToCollection(requestLinkInfo)
+
+        if (userAdd) {
+          const obj: IRoutes = {
+            statusCode: 202,
+            message: 'user have been added to collection'
+          }
+
+          res.status(202).send(obj)
+        } else {
+          const obj: IRoutes = {
+            statusCode: 409,
+            message: 'user alrady in collection'
+          }
+        }
+
+      } else {
+        const obj: IRoutes = {
+          statusCode: 403,
+          message: 'not a valid key for link'
+        }
+
+        res.status(403).send(obj)
+      }
+    } else {
+      const obj: IRoutes = {
+        statusCode: 403,
+        message: 'not a valid token in the header on no token in the header'
+      }
+
+      res.status(403).send(obj)
+    }
+  })
+
 
 module.exports = side
