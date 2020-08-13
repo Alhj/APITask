@@ -5,6 +5,7 @@ import { Document } from 'mongoose'
 import { checkKey } from '../../helpers/generate/ApiKey'
 import { validateInfo } from '../../helpers/validation/validatRequestLink'
 import { validateRequestLink, addUserToCollection } from '../../helpers/dbhelp/'
+import { checkRequestExist } from '../../helpers/dbhelp'
 import { genereateLinkKey } from '../../helpers/generate/ApiKey'
 
 import RequestCollection from '../../helpers/scheman/collectionRequest'
@@ -67,18 +68,26 @@ side.route('/requestLink')
         collectionId: req.query.collectionId
       }
 
-      const userFind:boolean = await validateRequestLink(credidsels)
+      const userFind: boolean = await validateRequestLink(credidsels)
 
       if (userFind) {
 
-        const key: string = genereateLinkKey()
+        let key: string
 
-        const doc: Document = new RequestLink({
-          linkId: key,
-          collectionId: credidsels.collectionId
-        })
+        const findKey:string = await checkRequestExist(req.query.collectionId)
 
-        doc.save()
+        if (findKey.length >= 1) {
+
+          key = genereateLinkKey()
+
+          const doc: Document = new RequestLink({
+            linkId: key,
+            collectionId: credidsels.collectionId
+          })
+          doc.save()
+        } else {
+          key = findKey
+        }
 
         const obj: IRouteRequestLink = {
           statusCode: 200,

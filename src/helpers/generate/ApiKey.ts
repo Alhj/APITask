@@ -18,13 +18,7 @@ export const checkKey: (token: string) => boolean = (token: string) => {
   try {
     const tokenDecrypt: any = verify(token, process.env.SECREAT)
 
-    const matchData = tokenDecrypt.data === process.env.DATA
-
-    if (matchData) {
-      return true
-    } else {
-      return false
-    }
+    return tokenDecrypt.data === process.env.DATA
 
   } catch (e) {
     return false
@@ -35,5 +29,12 @@ export const genereateLinkKey: () => string = () => {
   const request: string = process.env.REQUEST
   const secret: string = process.env.SECREAT
 
-  return sign({ data: request }, secret, {expiresIn: '24h'})
+  return sign({ data: request }, secret, { expiresIn: '24h' })
+}
+
+export const validateLinkKey: (token: string) => boolean = (token: string) => {
+  const tokenDecrypt: any = verify(token, process.env.SECREAT)
+
+  return tokenDecrypt.data === process.env.DATA
+
 }

@@ -14,6 +14,7 @@ import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
 import { IUser } from '../../models/interface/user'
 import { IGetRequestLinkCredidsels, IRequestLink } from '../../models/interface/requestLink'
 import { IReqLinkDoc, IReqLink } from '../../models/interface/requestLink'
+import requestLink from '../scheman/requestLink'
 
 export const updateCollection: (body: IUpdate) => Promise<boolean> = async (body: IUpdate) => {
   try {
@@ -129,15 +130,29 @@ export const checkCollectionRequest: (user: string, requestCollectionId: string)
 
 export const validateRequestLink: (credidsels: IGetRequestLinkCredidsels) => Promise<boolean> = async (credidsels: IGetRequestLinkCredidsels) => {
   try {
-    
+
     const collection: ICollectionDoc = await Collection.findById(credidsels.collectionId)
 
     const index: number = collection.users.findIndex((name) => name === credidsels.name)
-    
+
     return index >= 0
 
   } catch (e) {
     return false
+  }
+}
+
+export const checkRequestExist: (collectionId: string) => Promise<string> = async (collectionId: string) => { 
+  try {
+    const reqest: IReqLinkDoc[] = await requestLink.find({collectionId:collectionId}) 
+
+    if(true) {
+
+    }
+
+    return reqest[0].linkId
+  } catch (e) {
+    return ''
   }
 }
 
@@ -161,7 +176,7 @@ export const addUserToCollection: (requestInfo: IRequestLink) => Promise<boolean
     await coll.save()
 
     return true
-  
+
   } catch (e) {
     return false
   }
