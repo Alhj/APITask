@@ -25,16 +25,15 @@ export const checkKey: (token: string) => boolean = (token: string) => {
   }
 }
 
-export const genereateLinkKey: () => string = () => {
-  const request: string = process.env.REQUEST
+export const genereateLinkKey: (collectionId: string) => string = (collectionId: string) => {
   const secret: string = process.env.SECREAT
 
-  return sign({ data: request }, secret, { expiresIn: '24h' })
+  return sign({ data: collectionId }, secret, { expiresIn: '24h' })
 }
 
-export const validateLinkKey: (token: string) => boolean = (token: string) => {
-  const tokenDecrypt: any = verify(token, process.env.SECREAT)
+export const validateLinkKey: (key: string, id:string) => boolean = (key: string, id:string) => {
+  const keyDecrypt: any = verify(key, process.env.SECREAT)
 
-  return tokenDecrypt.data === process.env.DATA
+  return keyDecrypt.data === id
 
 }

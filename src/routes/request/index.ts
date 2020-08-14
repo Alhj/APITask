@@ -1,15 +1,13 @@
 import { Router } from 'express'
 import { Request, Response } from 'express'
-import { Document } from 'mongoose'
 
 import { checkKey } from '../../helpers/generate/ApiKey'
 import { validateInfo } from '../../helpers/validation/validatRequestLink'
 import { validateRequestLink, addUserToCollection } from '../../helpers/dbhelp/'
-import { checkRequestExist } from '../../helpers/dbhelp'
-import { genereateLinkKey } from '../../helpers/generate/ApiKey'
+import { genereateLinkKey, validateLinkKey } from '../../helpers/generate/ApiKey'
 
 import RequestCollection from '../../helpers/scheman/collectionRequest'
-import RequestLink from '../../helpers/scheman/requestLink'
+
 
 import { IRoutes, IRotueRequest, IRouteRequestLink } from '../../models/interface/routes'
 import { ICollectionRequestDoc } from '../../models/interface/requestCollection'
@@ -72,22 +70,7 @@ side.route('/requestLink')
 
       if (userFind) {
 
-        let key: string
-
-        const findKey:string = await checkRequestExist(req.query.collectionId)
-
-        if (findKey.length >= 1) {
-
-          key = genereateLinkKey()
-
-          const doc: Document = new RequestLink({
-            linkId: key,
-            collectionId: credidsels.collectionId
-          })
-          doc.save()
-        } else {
-          key = findKey
-        }
+        const key: string = genereateLinkKey(credidsels.collectionId)
 
         const obj: IRouteRequestLink = {
           statusCode: 200,
@@ -121,7 +104,7 @@ side.route('/requestLink')
         name: req.query.name,
         requestLinkId: req.query.id
       }
-      if (validateInfo(requestLinkInfo.requestLinkId)) {
+      if (validateLinkKey(requestLinkInfo.requestLinkId, req.query.collection)) {
 
         const userAdd: boolean = await addUserToCollection(requestLinkInfo)
 
@@ -137,6 +120,8 @@ side.route('/requestLink')
             statusCode: 409,
             message: 'user alrady in collection'
           }
+          
+          res.status(409).send(obj);
         }
 
       } else {
