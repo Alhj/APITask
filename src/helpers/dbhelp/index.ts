@@ -156,20 +156,18 @@ export const checkRequestExist: (collectionId: string) => Promise<string> = asyn
   }
 }
 
-export const addUserToCollection: (requestInfo: IRequestLink) => Promise<boolean> = async (requestInfo: IRequestLink) => {
+export const addUserToCollection: (credidsels: IRequestLink) => Promise<boolean> = async (credidsels: IRequestLink) => {
   try {
 
-    let request: IReqLinkDoc = await RequestLink.findById(requestInfo.requestLinkId)
+    let coll: ICollectionDoc = await Collection.findById(credidsels.collectionId)
 
-    let coll: ICollectionDoc = await Collection.findById(request.collectionId)
-
-    const index: number = coll.users.findIndex((user) => requestInfo.name === user)
+    const index: number = coll.users.findIndex((user) => credidsels.name === user)
 
     if (index >= 0) {
       throw new Error()
     }
 
-    coll.users.push(requestInfo.name)
+    coll.users.push(credidsels.name)
 
     coll.markModified('users')
 

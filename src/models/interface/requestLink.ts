@@ -9,6 +9,7 @@ export interface IGetRequestLinkCredidsels {
 export interface IRequestLink {
   name: string
   requestLinkId: string
+  collectionId:string
 }
 
 export interface IReqLink {

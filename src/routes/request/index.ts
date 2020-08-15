@@ -2,7 +2,6 @@ import { Router } from 'express'
 import { Request, Response } from 'express'
 
 import { checkKey } from '../../helpers/generate/ApiKey'
-import { validateInfo } from '../../helpers/validation/validatRequestLink'
 import { validateRequestLink, addUserToCollection } from '../../helpers/dbhelp/'
 import { genereateLinkKey, validateLinkKey } from '../../helpers/generate/ApiKey'
 
@@ -100,13 +99,14 @@ side.route('/requestLink')
     const token: string = req.header('authorization').substring(7)
 
     if (checkKey(token)) {
-      const requestLinkInfo: IRequestLink = {
+      const credidsels: IRequestLink = {
         name: req.query.name,
-        requestLinkId: req.query.id
+        requestLinkId: req.query.id,
+        collectionId: req.query.collection
       }
-      if (validateLinkKey(requestLinkInfo.requestLinkId, req.query.collection)) {
+      if (validateLinkKey(credidsels)) {
 
-        const userAdd: boolean = await addUserToCollection(requestLinkInfo)
+        const userAdd: boolean = await addUserToCollection(credidsels)
 
         if (userAdd) {
           const obj: IRoutes = {

@@ -1,7 +1,6 @@
 import { sign, verify } from 'jsonwebtoken'
 import { config } from 'dotenv'
-
-import { IToken } from '../../models/interface/auth'
+import { IRequestLink } from '../../models/interface/requestLink'
 
 config()
 
@@ -31,9 +30,9 @@ export const genereateLinkKey: (collectionId: string) => string = (collectionId:
   return sign({ data: collectionId }, secret, { expiresIn: '24h' })
 }
 
-export const validateLinkKey: (key: string, id:string) => boolean = (key: string, id:string) => {
-  const keyDecrypt: any = verify(key, process.env.SECREAT)
+export const validateLinkKey: (credidsels:IRequestLink) => boolean = (credidsels:IRequestLink) => {
+  const keyDecrypt: any = verify(credidsels.requestLinkId, process.env.SECREAT)
 
-  return keyDecrypt.data === id
+  return keyDecrypt.data === credidsels.collectionId
 
 }
