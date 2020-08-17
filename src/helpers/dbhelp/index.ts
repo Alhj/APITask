@@ -142,11 +142,11 @@ export const validateRequestLink: (credidsels: IGetRequestLinkCredidsels) => Pro
   }
 }
 
-export const checkRequestExist: (collectionId: string) => Promise<string> = async (collectionId: string) => { 
+export const checkRequestExist: (collectionId: string) => Promise<string> = async (collectionId: string) => {
   try {
-    const reqest: IReqLinkDoc[] = await requestLink.find({collectionId:collectionId}) 
+    const reqest: IReqLinkDoc[] = await requestLink.find({ collectionId: collectionId })
 
-    if(true) {
+    if (true) {
 
     }
 
@@ -177,6 +177,16 @@ export const addUserToCollection: (credidsels: IRequestLink) => Promise<boolean>
 
   } catch (e) {
     return false
+  }
+}
+
+export const getCollectionName: (collectionId: string) => Promise<string> = async (collectionId: string) => {
+  try {
+    const collection: ICollectionDoc = await Collection.findById(collectionId)
+
+    return collection.project
+  } catch (e) {
+    return ''
   }
 }
 

@@ -31,6 +31,10 @@ export interface IRotueUserV extends IRoutes {
 export interface IRotueRequest extends IRoutes {
   requestCollection: ICollectionRequestDoc[]
 }
+export interface IRoutueInfoCollection extends IRoutes {
+  collectionName: string
+}
+
 
 export interface IRouteRequestLink extends IRoutes {
   key: string

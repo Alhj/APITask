@@ -31,6 +31,8 @@ app.use('/request', require('./routes/request'))
 
 app.use('/validation', require('./routes/validation'))
 
+app.use('/info', require('./routes/Info'))
+
 app.use((req: Request, res: Response) => { res.status(404).send(obj404) })
 
 app.listen(port, () => {
