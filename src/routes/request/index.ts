@@ -101,11 +101,11 @@ side.route('/requestLink')
     if (checkKey(token)) {
       const credidsels: IRequestLink = {
         name: req.query.name,
-        requestLinkId: req.query.id,
-        collectionId: req.query.collection
+        requestLinkId: req.query.key,
+        collectionId: req.query.collectionId
       }
-      if (validateLinkKey(credidsels)) {
 
+      if (validateLinkKey(credidsels)) {
         const userAdd: boolean = await addUserToCollection(credidsels)
 
         if (userAdd) {
@@ -117,11 +117,11 @@ side.route('/requestLink')
           res.status(202).send(obj)
         } else {
           const obj: IRoutes = {
-            statusCode: 409,
+            statusCode: 204,
             message: 'user alrady in collection'
           }
           
-          res.status(409).send(obj);
+          res.status(204).send(obj);
         }
 
       } else {
