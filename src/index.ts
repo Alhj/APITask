@@ -13,6 +13,8 @@ const port = process.env.PORT || 8080
 connectToDb()
 
 const corsOption: CorsOptions = {
+  origin: 'http://localhost:4200',
+  methods: 'GET,PUT,POST,DELETE',
   exposedHeaders: ['authorization'],
   optionsSuccessStatus: 200
 }
