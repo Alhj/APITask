@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { Document } from 'mongoose'
 
 import Collection from '../../helpers/scheman/collection'
-import { checkKey } from '../../helpers/generate/ApiKey'
+import { checkKey } from '../../helpers/generate'
 import { dealteCollection, dealteTaskCollection } from '../../helpers/dbhelp'
 import { updateCollection, dealteTask } from '../../helpers/dbhelp'
 import { request, checkCollectionRequest } from '../../helpers/dbhelp'

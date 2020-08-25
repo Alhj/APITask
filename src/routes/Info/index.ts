@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { Request, Response } from 'express'
 
 import { getCollectionName } from '../../helpers/dbhelp'
-import { checkKey } from '../../helpers/generate/ApiKey'
+import { checkKey } from '../../helpers/generate'
 
 import { IRoutes, IRoutueInfoCollection } from '../../models/interface/routes'
 

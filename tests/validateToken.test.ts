@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { generateKey, checkKey } from '../src/helpers/generate/ApiKey'
+import { generateKey, checkKey } from '../src/helpers/generate'
 import { createToken, createTokenSecreate } from './helpers/genereateAPIKey'
 
 describe('token', function () {

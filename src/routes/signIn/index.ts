@@ -4,7 +4,7 @@ import { config } from 'dotenv'
 
 import User from '../../helpers/scheman/user'
 import { comparePassword } from '../../helpers/validation/comparePass'
-import { generateKey } from '../../helpers/generate/ApiKey'
+import { generateKey } from '../../helpers/generate'
 import validateAuth from '../../helpers/validation/validateAuth'
 
 import { IAuthSigin } from '../../models/interface/auth'

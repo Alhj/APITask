@@ -21,6 +21,8 @@ const corsOption: CorsOptions = {
 
 app.use(cors(corsOption))
 
+app.disable('x-powered-by')
+
 app.use(json())
 
 app.use('/user', require('./routes/signUp'))

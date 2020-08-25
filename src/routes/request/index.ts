@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import { Request, Response } from 'express'
 
-import { checkKey } from '../../helpers/generate/ApiKey'
+import { checkKey } from '../../helpers/generate'
 import { validateRequestLink, addUserToCollection } from '../../helpers/dbhelp/'
-import { genereateLinkKey, validateLinkKey } from '../../helpers/generate/ApiKey'
+import { genereateLinkKey, validateLinkKey } from '../../helpers/generate'
 
 import RequestCollection from '../../helpers/scheman/collectionRequest'
 

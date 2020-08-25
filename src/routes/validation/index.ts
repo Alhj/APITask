@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { Request, Response } from 'express'
 
-import { checkKey } from '../../helpers/generate/ApiKey'
+import { checkKey } from '../../helpers/generate'
 import { validateUser } from '../../helpers/dbhelp/index'
 
 import { IRoutes, IRotueUserV } from '../../models/interface/routes'

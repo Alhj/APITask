@@ -1,7 +1,9 @@
 import { sign, verify } from 'jsonwebtoken'
 import { config } from 'dotenv'
 import { IRequestLink } from '../../models/interface/requestLink'
+import { Document } from 'mongoose'
 
+import User from '../scheman/user'
 config()
 
 export const generateKey: () => string = () => {
@@ -35,4 +37,18 @@ export const validateLinkKey: (credidsels:IRequestLink) => boolean = (credidsels
 
   return keyDecrypt.data === credidsels.collectionId
 
+}
+
+export const genereateUserNameCrypt: (name:string) => string = (name:string) => {
+  const secret: string  = process.env.SECREAT
+  return  sign({ data: name}, secret)
+}
+
+
+export const validateUser: (nameCrypt: string) => Promise<boolean> = async (nameCrypt: string) => {
+  const nameDecrypt:any = verify(nameCrypt, process.env.SECREAT)
+ 
+  const findUser:Document[] =  await User.find({name:nameDecrypt.data})
+
+  return findUser.length >= 1
 }
