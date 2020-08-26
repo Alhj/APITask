@@ -3,13 +3,14 @@ import { Request, Response } from 'express'
 import { Document } from 'mongoose'
 
 import Collection from '../../helpers/scheman/collection'
-import { checkKey } from '../../helpers/generate'
+import { checkKey, validateUser } from '../../helpers/generate'
 import { dealteCollection, dealteTaskCollection } from '../../helpers/dbhelp'
 import { updateCollection, dealteTask } from '../../helpers/dbhelp'
 import { request, checkCollectionRequest } from '../../helpers/dbhelp'
 import TaskCollection from '../../helpers/scheman/collection'
 import UserCollection from '../../helpers/scheman/user'
 import RequestCollection from '../../helpers/scheman/collectionRequest'
+
 
 import { IRoutes, IRouteCollection } from '../../models/interface/routes'
 import { IRotueUpdate } from '../../models/interface/routes'
@@ -25,11 +26,13 @@ side.route('/')
 
     const token: string = req.header('authorization').substring(7)
 
-    if (checkKey(token)) {
+    const userName: string = req.query.name
+
+    const validUser:string = await validateUser(userName)
+
+    if (checkKey(token) && validUser.length >= 1) {
 
       let collections: ICollectionDoc[] = []
-
-      const userName: string = req.query.name;
 
       const findCollection: ICollectionDoc[] = await Collection.find();
 

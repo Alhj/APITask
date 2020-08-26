@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { Request, Response } from 'express'
 import { Document } from 'mongoose'
+
 import User from '../../helpers/scheman/user'
 import validateUser from '../../helpers/validation/checkUser'
 import { IRoutes, IRotueDbUser } from '../../models/interface/routes'

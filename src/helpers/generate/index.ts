@@ -4,6 +4,9 @@ import { IRequestLink } from '../../models/interface/requestLink'
 import { Document } from 'mongoose'
 
 import User from '../scheman/user'
+
+import { IUser } from '../../models/interface/user'
+
 config()
 
 export const generateKey: () => string = () => {
@@ -45,10 +48,14 @@ export const genereateUserNameCrypt: (name:string) => string = (name:string) => 
 }
 
 
-export const validateUser: (nameCrypt: string) => Promise<boolean> = async (nameCrypt: string) => {
+export const validateUser: (nameCrypt: string) => Promise<string> = async (nameCrypt: string) => {
+ try {
   const nameDecrypt:any = verify(nameCrypt, process.env.SECREAT)
  
-  const findUser:Document[] =  await User.find({name:nameDecrypt.data})
+  const findUser:IUser =  await User.findOne({name:nameDecrypt.data})
 
-  return findUser.length >= 1
+  return findUser.name
+ } catch (e) {
+  return ''
+ }
 }
