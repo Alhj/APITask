@@ -5,7 +5,6 @@ import { config } from 'dotenv'
 import User from '../../helpers/scheman/user'
 import { comparePassword } from '../../helpers/validation/comparePass'
 import { generateKey } from '../../helpers/generate'
-import { genereateUserNameCrypt } from '../../helpers/generate/'
 import validateAuth from '../../helpers/validation/validateAuth'
 
 
@@ -48,7 +47,7 @@ side.route('/')
         const obj: IRotueAuth = {
           statusCode: 202,
           message: 'token can be found in header',
-          user: genereateUserNameCrypt(user.name),
+          user: user.name,
           authState: true
         }
 

@@ -26,11 +26,9 @@ side.route('/')
 
     const token: string = req.header('authorization').substring(7)
 
-    const userName: string = req.query.name
+    if (checkKey(token)) {
 
-    const validUser:string = await validateUser(userName)
-
-    if (checkKey(token) && validUser.length >= 1) {
+      const userName: string = req.query.name
 
       let collections: ICollectionDoc[] = []
 
