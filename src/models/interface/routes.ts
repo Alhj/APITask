@@ -35,7 +35,10 @@ export interface IRoutueInfoCollection extends IRoutes {
   collectionName: string
 }
 
-
 export interface IRouteRequestLink extends IRoutes {
   key: string
+}
+
+export interface IRouteCollectionUsers extends IRoutes {
+  users?: string[]
 }

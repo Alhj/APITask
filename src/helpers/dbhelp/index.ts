@@ -190,6 +190,15 @@ export const getCollectionName: (collectionId: string) => Promise<string> = asyn
   }
 }
 
+export const getCollectionUsers: (collectionId: string) => Promise<string[]> = async (collectionId: string) => {
+  try {
+    const collection: ICollectionDoc = await Collection.findById(collectionId)
+    return collection.users
+  } catch (e) {
+    return ['']
+  }
+}
+
 const remove: (coll: ICollectionDoc, id: string) => ITaskCollection[] = (coll: ICollectionDoc, taskId: string) => {
   let filterColl: ITaskCollection[] = [];
 
