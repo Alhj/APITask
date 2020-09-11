@@ -6,6 +6,10 @@ const collectionScheman: Schema = new Schema({
     type: String,
     required: true
   },
+  admin: {
+    type: String,
+    required: true
+  },
   taskCollection: {
     type: Array
   },

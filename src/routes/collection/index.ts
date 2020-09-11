@@ -88,6 +88,7 @@ side.route('/')
 
       const newCollection: Document = new TaskCollection({
         project: projectName,
+        admin: userName,
         taskCollection: [],
         users: [userName]
       })
